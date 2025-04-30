@@ -1,103 +1,120 @@
+const correctPassword = "eisp1";
+const storageKey = "eistabelleData";
+const defaultSorten = [
+  "Schokolade", "Vanille", "Erdbeer", "Himmelblau", "Lila",
+  "Mango", "Menta", "Cookies", "Stracciatella", "Kinderschoko"
+];
 
-document.addEventListener('DOMContentLoaded', () => {
-  const correctPassword = 'eisp1';
-
-  if (localStorage.getItem('pw_valid') === '1') {
+window.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("loginOk") === "true") {
     showApp();
   }
+});
 
-  document.getElementById('passwordInput')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') checkPassword();
+function checkPassword() {
+  const input = document.getElementById("passwordInput").value;
+  if (input === correctPassword) {
+    localStorage.setItem("loginOk", "true");
+    showApp();
+  } else {
+    document.getElementById("loginError").style.display = "block";
+  }
+}
+
+function showApp() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  loadData();
+  document.activeElement.blur(); // Tastatur schließen
+  window.scrollTo(0, 0); // nach oben scrollen
+}
+
+function saveData() {
+  const data = [];
+  const rows = document.querySelectorAll("#tableBody tr");
+  rows.forEach(row => {
+    const name = row.querySelector(".name").value;
+    const laden = row.querySelector(".laden").value;
+    const lager = row.querySelector(".lager").value;
+    data.push({ name, laden, lager });
+  });
+  localStorage.setItem(storageKey, JSON.stringify(data));
+  showSaveNotice();
+}
+
+function loadData() {
+  const saved = localStorage.getItem(storageKey);
+  const tableBody = document.getElementById("tableBody");
+  tableBody.innerHTML = "";
+
+  let data;
+  if (saved) {
+    data = JSON.parse(saved);
+  } else {
+    data = defaultSorten.map(name => ({ name, laden: "", lager: "" }));
+    localStorage.setItem(storageKey, JSON.stringify(data));
+  }
+
+  data.forEach(entry => {
+    const row = createRow(entry.name, entry.laden, entry.lager);
+    tableBody.appendChild(row);
   });
 
-  window.checkPassword = () => {
-    const input = document.getElementById('passwordInput').value;
-    if (input === correctPassword) {
-      localStorage.setItem('pw_valid', '1');
-      showApp();
-    } else {
-      document.getElementById('loginError').style.display = 'block';
-    }
-  };
+  updateDeleteDropdown();
+}
 
-  function showApp() {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    loadData();
-  }
+function addRow() {
+  const tableBody = document.getElementById("tableBody");
+  const row = createRow("", "", "");
+  tableBody.appendChild(row);
+  updateDeleteDropdown();
+  saveData();
+}
 
-  const tableBody = document.getElementById('tableBody');
-  const deleteSelect = document.getElementById('deleteSelect');
-  const saveNotice = document.getElementById('saveNotice');
+function createRow(name, laden, lager) {
+  const tr = document.createElement("tr");
+  tr.innerHTML = 
+    <td><input class="name" type="text" value="${name}"></td>
+    <td><input class="laden" type="number" value="${laden}"></td>
+    <td><input class="lager" type="number" value="${lager}"></td>
+  ;
+  return tr;
+}
 
-  function saveData() {
-    const data = [];
-    tableBody?.querySelectorAll('tr').forEach(row => {
-      const inputs = row.querySelectorAll('input');
-      data.push({
-        sorte: inputs[0].value,
-        laden: inputs[1].value,
-        lager: inputs[2].value
-      });
-    });
-    localStorage.setItem('eistabelle', JSON.stringify(data));
-    if (saveNotice) {
-      saveNotice.style.display = 'block';
-      setTimeout(() => saveNotice.style.display = 'none', 2000);
-    }
-  }
+function showDeleteModal() {
+  document.getElementById("deleteModal").style.display = "block";
+}
 
-  function loadData() {
-    const saved = localStorage.getItem('eistabelle');
-    if (saved) {
-      const data = JSON.parse(saved);
-      data.forEach(row => addRow(row.sorte, row.laden, row.lager));
-    }
-  }
+function hideDeleteModal() {
+  document.getElementById("deleteModal").style.display = "none";
+}
 
-  window.addRow = function(sorte = '', laden = '', lager = '') {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td><input type="text" value="${sorte}"></td>
-      <td><input type="text" value="${laden}"></td>
-      <td><input type="text" value="${lager}"></td>
-    `;
-    row.querySelectorAll('input').forEach(input => {
-      input.addEventListener('input', saveData);
-    });
-    tableBody.appendChild(row);
-    updateDeleteSelect();
+function updateDeleteDropdown() {
+  const select = document.getElementById("deleteSelect");
+  select.innerHTML = "";
+  const rows = document.querySelectorAll("#tableBody tr");
+  rows.forEach((row, index) => {
+    const name = row.querySelector(".name").value;
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = name;
+    select.appendChild(option);
+  });
+}
+
+function deleteRow() {
+  const index = document.getElementById("deleteSelect").value;
+  const rows = document.querySelectorAll("#tableBody tr");
+  if (rows[index]) {
+    rows[index].remove();
     saveData();
-  };
-
-  function updateDeleteSelect() {
-    deleteSelect.innerHTML = '';
-    tableBody?.querySelectorAll('tr').forEach((row, index) => {
-      const sorte = row.querySelector('input').value;
-      const option = document.createElement('option');
-      option.value = index;
-      option.textContent = sorte || `Sorte ${index + 1}`;
-      deleteSelect.appendChild(option);
-    });
+    updateDeleteDropdown();
+    hideDeleteModal();
   }
+}
 
-  window.deleteRow = () => {
-    const index = deleteSelect.value;
-    if (index !== null && tableBody.children[index]) {
-      tableBody.removeChild(tableBody.children[index]);
-      updateDeleteSelect();
-      saveData();
-      hideDeleteModal();
-    }
-  };
-
-  window.showDeleteModal = () => {
-    document.getElementById('deleteModal').style.display = 'block';
-  };
-
-  window.hideDeleteModal = () => {
-    document.getElementById('deleteModal').style.display = 'none';
-  };
-
-  window.saveData = saveData;
-});
+function showSaveNotice() {
+  const notice = document.getElementById("saveNotice");
+  notice.style.display = "block";
+  setTimeout(() => (notice.style.display = "none"), 1500);
+}
