@@ -46,11 +46,6 @@ button {
   color: white;
   border: none;
   border-radius: 10px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #666;
 }
 
 .col-name {
@@ -70,37 +65,33 @@ button:hover {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .modal-content {
   background-color: #2a2a2a;
   color: white;
+  margin: 50% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
   max-width: 300px;
   text-align: center;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255,255,255,0.2);
 }
 
 /* Verbesserte Dropdown-Darstellung im Modal */
 .modal-content select {
-  width: 90%;
-  padding: 8px;
-  font-size: 18px;
+  width: 180px;
+  padding: 6px;
+  font-size: 16px;
   border-radius: 6px;
   background-color: #2a2a2a;
   color: #af4f1c;
   border: 1px solid #666;
-  margin: 10px 0;
 }
 
 #saveNotice {
   color: lightgreen;
   display: none;
   margin-top: 10px;
-}
+} 
