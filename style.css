@@ -45,7 +45,7 @@ button {
   background-color: #444;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
 }
 
 .col-name {
@@ -70,7 +70,7 @@ button {
 .modal-content {
   background-color: #2a2a2a;
   color: white;
-  margin: 25% auto;
+  margin: 50% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
@@ -86,7 +86,7 @@ button {
   font-size: 16px;
   border-radius: 6px;
   background-color: #2a2a2a;
-  color: white;
+  color: #af4f1c;
   border: 1px solid #666;
 }
 
