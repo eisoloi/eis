@@ -57,6 +57,11 @@
     </div>
   </div>
 
+  <!-- Installations-Button -->
+  <div style="text-align:center; margin-top: 1em;">
+    <button id="installButton" style="display: none;">📲 App installieren</button>
+  </div>
+
   <script src="script.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
@@ -66,9 +71,37 @@
         });
       });
     }
+
+    // Installations-Prompt-Handling
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('installButton');
+      if (installBtn) {
+        installBtn.style.display = 'inline-block';
+        installBtn.addEventListener('click', () => {
+          installBtn.style.display = 'none';
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('App wurde zur Installation akzeptiert.');
+            } else {
+              console.log('App-Installation wurde abgelehnt.');
+            }
+            deferredPrompt = null;
+          });
+        });
+      }
+    });
   </script>
+
   <footer style="font-size:10px; margin-top:2em;">
     Icon von <a href="https://icons8.com" target="_blank" style="color:white;">Icons8</a>
+  </footer>
+</body>
+</html>
+
   </footer>
 </body>
 </html>
