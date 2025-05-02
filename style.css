@@ -41,7 +41,7 @@ th, td {
 input {
   width: 100%;
   font-size: 20px;
-  background-color: #212121;
+  background-color: #2a2a2a;
   color: white;
   border: none;
   padding: 5px;
@@ -53,7 +53,7 @@ button {
   margin: 10px 5px;
   padding: 14px 22px;
   font-size: 18px;
-  background-color: #474747;
+  background-color: #262626;
   color: white;
   border: none;
   border-radius: 12px;
