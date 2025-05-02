@@ -10,6 +10,11 @@ html, body {
   width: 100%;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ========== Titel ========== */
@@ -23,9 +28,12 @@ html, body {
 .table-container {
   width: 100%;
   overflow-x: auto;
-  text-align: center;
   padding: 0 12px;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 }
 
 .table-container table {
@@ -44,7 +52,7 @@ table {
 th, td {
   border: 1px solid #444;
   padding: 10px;
-  font-size: 26px;
+  font-size: 30px; /* Schriftgröße erhöht */
 }
 
 /* Spaltenbreite */
@@ -69,8 +77,8 @@ input {
 
 /* ========== Buttons ========== */
 button {
-  padding: 16px 28px;
-  font-size: 20px;
+  padding: 10px 16px; /* kompaktere Größe */
+  font-size: 16px;    /* kleinere Schrift */
   background-color: #262626;
   color: white;
   border: none;
@@ -201,4 +209,5 @@ button:active {
     width: 60px;
   }
 }
+
 
