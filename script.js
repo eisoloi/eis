@@ -114,8 +114,10 @@ function deleteRow() {
 
 function showSaveNotice() {
   const notice = document.getElementById("saveNotice");
-  notice.style.display = "block";
-  setTimeout(() => (notice.style.display = "none"), 1500);
+  notice.style.display = "inline-block";
+  setTimeout(() => {
+    notice.style.display = "none";
+  }, 2000);
 }
 
 
