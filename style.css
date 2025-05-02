@@ -4,23 +4,26 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 1em;
-  text-align: center;
 }
 
 .title {
   font-size: 30px;
   margin-bottom: 0.5em;
+  text-align: center;
 }
 
 .table-container {
-  display: flex;
-  justify-content: center;
   overflow-x: auto;
+  padding-left: max(5vw, 12px);
+  padding-right: max(5vw, 12px);
+  box-sizing: border-box;
 }
 
 table {
   border-collapse: collapse;
-  width: auto;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 th, td {
@@ -36,6 +39,7 @@ input {
   color: white;
   border: none;
   padding: 5px;
+  box-sizing: border-box;
 }
 
 button {
@@ -46,6 +50,11 @@ button {
   color: white;
   border: none;
   border-radius: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
 }
 
 .col-name {
@@ -81,17 +90,20 @@ button {
 
 /* Verbesserte Dropdown-Darstellung im Modal */
 .modal-content select {
-  width: 180px;
+  width: 100%;
+  max-width: 180px;
   padding: 6px;
   font-size: 16px;
   border-radius: 6px;
   background-color: #2a2a2a;
   color: #db6a3b;
   border: 1px solid #666;
+  box-sizing: border-box;
 }
 
 #saveNotice {
   color: lightgreen;
   display: none;
   margin-top: 10px;
-} 
+  text-align: center;
+}
