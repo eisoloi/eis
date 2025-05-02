@@ -115,6 +115,10 @@ function deleteRow() {
 function showSaveNotice() {
   const notice = document.getElementById("saveNotice");
   notice.style.display = "inline-block";
+  notice.style.animation = "none"; // Reset Animation
+  notice.offsetHeight; // Trigger Reflow
+  notice.style.animation = "fadeOut 2s ease forwards";
+
   setTimeout(() => {
     notice.style.display = "none";
   }, 2000);
