@@ -1,49 +1,44 @@
-/* Verhindert automatische Text-Skalierung auf Mobilgeräten */
-html {
+/* ========== Grundlayout ========== */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #1e1e1e;
+  color: white;
+  font-family: sans-serif;
+  overflow-x: hidden;
+  height: 100%;
+  width: 100%;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
 }
 
-body {
-  background-color: #1e1e1e;
-  color: white;
-  font-family: sans-serif;
-  margin: 0;
-  padding: 1em;
-  overflow-x: hidden;
-  width: 100vw;
-}
-
+/* ========== Titel ========== */
 .title {
-  font-size: 30px;
-  margin-bottom: 0.5em;
+  font-size: 32px;
   text-align: center;
+  margin: 1em 0 0.5em;
 }
 
+/* ========== Tabelle zentriert ========== */
 .table-container {
-  text-align: center;
+  width: 100%;
   overflow-x: auto;
-  padding-left: 12px;
-  padding-right: 12px;
+  text-align: center;
+  padding: 0 12px;
   box-sizing: border-box;
 }
 
 .table-container table {
   display: inline-block;
+  margin: 0 auto;
+  border-collapse: collapse;
+  max-width: 100%;
   text-align: left;
 }
 
-.table-container::after {
-  content: "";
-  display: block;
-  height: 150px; /* Platz für Button-Leiste */
-}
-
 table {
-  border-collapse: collapse;
-  width: 100%;
   max-width: 1000px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 th, td {
@@ -52,19 +47,28 @@ th, td {
   font-size: 20px;
 }
 
+/* Spaltenbreite */
+.col-name {
+  min-width: 200px;
+}
+
+.col-small {
+  width: 70px;
+}
+
+/* ========== Eingabefelder ========== */
 input {
   width: 100%;
   font-size: 20px;
   background-color: #2a2a2a;
   color: white;
   border: none;
-  padding: 5px;
+  padding: 8px;
   box-sizing: border-box;
 }
 
-/* Modernes Button-Design */
+/* ========== Buttons ========== */
 button {
-  margin: 10px 5px;
   padding: 14px 22px;
   font-size: 18px;
   background-color: #262626;
@@ -72,6 +76,7 @@ button {
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  margin: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
@@ -85,18 +90,43 @@ button:active {
   transform: scale(0.98);
 }
 
-.col-name {
-  min-width: 170px;
+/* ========== Button-Leiste unten fixiert ========== */
+.fixed-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #181818;
+  text-align: center;
+  padding: 10px 0;
+  border-top: 1px solid #444;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 }
 
-.col-small {
-  width: 60px;
+/* ========== Speicher-Hinweis ========== */
+#saveNotice {
+  display: none;
+  margin-left: 10px;
+  color: #4caf50;
+  font-size: 16px;
+  font-weight: bold;
+  vertical-align: middle;
+  animation: fadeOut 2s ease forwards;
 }
 
+@keyframes fadeOut {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ========== Modal-Stil ========== */
 .modal {
   display: none;
   position: fixed;
-  z-index: 100;
+  z-index: 999;
   left: 0;
   top: 0;
   width: 100%;
@@ -130,25 +160,7 @@ button:active {
   box-sizing: border-box;
 }
 
-/* Hinweistext direkt neben Speicher-Button */
-#saveNotice {
-  display: none;
-  margin-left: 10px;
-  color: #4caf50;
-  font-size: 16px;
-  font-weight: bold;
-  vertical-align: middle;
-  animation: fadeOut 2s ease forwards;
-}
-
-@keyframes fadeOut {
-  0%   { opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* Installationsbutton */
+/* ========== Installationsbutton ========== */
 #installButton {
   background-color: #2e2e2e;
   color: white;
@@ -170,50 +182,15 @@ button:active {
   transform: scale(0.98);
 }
 
-/* Fixierte Button-Leiste unten */
-.fixed-buttons {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #181818;
-  padding: 10px 0;
-  text-align: center;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
-  z-index: 1000;
-  border-top: 1px solid #444;
-}
-
-.fixed-buttons button {
-  margin: 5px 10px;
-}
-
-/* Responsive für 5" bis 10" Displays */
-@media (max-width: 400px) {
+/* ========== Responsive Optimierungen ========== */
+@media (max-width: 500px) {
   .title {
     font-size: 24px;
   }
 
   th, td, input, button {
     font-size: 16px;
-  }
-
-  .col-name {
-    min-width: 140px;
-  }
-
-  .col-small {
-    width: 50px;
-  }
-}
-
-@media (min-width: 401px) and (max-width: 499px) {
-  .title {
-    font-size: 28px;
-  }
-
-  th, td, input, button {
-    font-size: 18px;
+    padding: 8px;
   }
 
   .col-name {
@@ -222,59 +199,6 @@ button:active {
 
   .col-small {
     width: 60px;
-  }
-}
-
-@media (min-width: 500px) and (max-width: 699px) {
-  .title {
-    font-size: 32px;
-  }
-
-  th, td, input, button {
-    font-size: 22px;
-    padding: 12px;
-  }
-
-  .col-name {
-    min-width: 200px;
-  }
-
-  .col-small {
-    width: 75px;
-  }
-
-  .modal-content {
-    font-size: 18px;
-    max-width: 360px;
-  }
-
-  #installButton {
-    font-size: 20px;
-    padding: 14px 22px;
-  }
-}
-
-@media (min-width: 700px) {
-  .title {
-    font-size: 36px;
-  }
-
-  th, td, input, button {
-    font-size: 24px;
-    padding: 14px;
-  }
-
-  .col-name {
-    min-width: 240px;
-  }
-
-  .col-small {
-    width: 90px;
-  }
-
-  .modal-content {
-    font-size: 20px;
-    max-width: 400px;
   }
 }
 
