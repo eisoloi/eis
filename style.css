@@ -4,7 +4,7 @@ html {
   text-size-adjust: none;
 }
 
-/* ========== Body als Flex-Container für exakte Zentrierung ========== */
+/* ========== Body als Grid mit Header, Content-Bereich und Footer ========== */
 body {
   background-color: #1e1e1e;
   color: white;
@@ -13,45 +13,53 @@ body {
   padding: 1em;
   box-sizing: border-box;
   width: 100vw;
-  height: 100vh;                /* volle Höhe */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;      /* vertikal zentrieren */
-  align-items: center;          /* horizontal zentrieren */
-  overflow-x: hidden;
+  height: 100vh;
+
+  display: grid;
+  grid-template-rows: auto 1fr; /* Titel-Reihe + Content-Reihe */
+  overflow: hidden;             /* verhindert Doppelscroll */
 }
 
-/* ========== Titel ========== */
+/* ========== Titel oben ========== */
 .title {
   font-size: 30px;
-  margin-bottom: 0.5em;
+  margin: 0 0 0.5em;
   text-align: center;
-  flex-shrink: 0;               /* Titel bleibt seine Höhe wert */
+  grid-row: 1; /* erste Grid-Zeile */
 }
 
-/* ========== Table-Container über der fixen Button-Leiste ========== */
+/* ========== Content-Bereich mit vertikal/horizontal zentrierter Tabelle ========== */
 .table-container {
-  width: 100%;
-  /* Höhe = Viewport - (Titel-Abstand + Button-Leiste) */
-  height: calc(100vh - 2em - 150px);
+  grid-row: 2;                  /* zweite Grid-Zeile */
   display: flex;
-  justify-content: center;     /* Tabelle horizontal mittig */
-  align-items: center;         /* Tabelle vertikal mittig im Container */
+  justify-content: center;      /* horizontal zentrieren */
+  align-items: center;          /* vertikal zentrieren */
+  width: 100%;
   padding: 0 12px;
-  padding-bottom: 150px;       /* Platz für Button-Leiste */
+  padding-bottom: 150px;        /* Platz für die fixe Button-Leiste */
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow-x: auto;             /* bei breiteren Tabellen horizontal scrollen */
+  overflow-y: auto;             /* bei hohen Tabellen vertikal scrollen */
 }
 
 /* ========== Tabelle ========== */
 .table-container table {
   border-collapse: collapse;
-  width: 100%;
+  width: 100%;     /* wächst mit dem Container */
   max-width: 1000px;
   margin: 0;
   text-align: left;
 }
 
+/* ========== Sticky Tabellen-Überschriften ========== */
+.table-container thead th {
+  position: sticky;
+  top: 0;
+  background-color: #1e1e1e;
+  z-index: 2;
+}
+
+/* ========== Zellenstil ========== */
 th, td {
   border: 1px solid #444;
   padding: 10px;
@@ -69,7 +77,7 @@ input {
   box-sizing: border-box;
 }
 
-/* ========== Buttons (immer groß) ========== */
+/* ========== Buttons ========== */
 button {
   margin: 10px 5px;
   padding: 16px 28px;
@@ -82,37 +90,40 @@ button {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
-
 button:hover {
   background-color: #a54020;
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
 }
-
 button:active {
   transform: scale(0.98);
 }
 
-/* ========== Spalten-Breite-Klassen ========== */
-.col-name {
-  min-width: 170px;
+/* ========== Fixierte Button-Leiste unten ========== */
+.fixed-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #181818;
+  padding: 10px 0;
+  text-align: center;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
+  border-top: 1px solid #444;
+  z-index: 999;
 }
 
-.col-small {
-  width: 60px;
-}
+/* ========== Spaltenbreiten ========== */
+.col-name { min-width: 170px; }
+.col-small{ width: 60px; }
 
 /* ========== Modal ========== */
 .modal {
   display: none;
   position: fixed;
   z-index: 100;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.6);
 }
-
 .modal-content {
   background-color: #1e1e1e;
   color: white;
@@ -125,7 +136,6 @@ button:active {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
-
 .modal-content select {
   width: 100%;
   max-width: 180px;
@@ -155,72 +165,29 @@ button:active {
   100% { opacity: 0; }
 }
 
-/* ========== Installationsbutton ========== */
-#installButton {
-  background-color: #2e2e2e;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 14px 22px;
-  font-size: 20px;
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease;
-}
-#installButton:hover { background-color: #3a3a3a; }
-#installButton:active { transform: scale(0.98); }
-
-/* ========== Fixierte Button-Leiste unten ========== */
-.fixed-buttons {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #181818;
-  padding: 10px 0;
-  text-align: center;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
-  z-index: 1000;
-  border-top: 1px solid #444;
-}
-
-/* ========== Responsive Optimierungen ========== */
+/* ========== Responsive Anpassungen ========== */
 @media (max-width: 400px) {
-  .title { font-size: 24px; }
-  th, td, input { font-size: 16px; }
-  .col-name { min-width: 140px; }
-  .col-small { width: 50px; }
+  .title               { font-size: 24px; }
+  th, td, input        { font-size: 16px; }
+  .col-name            { min-width: 140px; }
+  .col-small           { width: 50px;  }
 }
-
-@media (min-width: 401px) and (max-width: 499px) {
-  .title { font-size: 28px; }
-  th, td, input { font-size: 18px; }
-  .col-name { min-width: 160px; }
-  .col-small { width: 60px; }
+@media (401px <= width <= 499px) {
+  .title               { font-size: 28px; }
+  th, td, input        { font-size: 18px; }
+  .col-name            { min-width: 160px; }
+  .col-small           { width: 60px;  }
 }
-
-@media (min-width: 500px) and (max-width: 699px) {
-  .title { font-size: 32px; }
-  th, td, input {
-    font-size: 22px;
-    padding: 12px;
-  }
-  .col-name { min-width: 200px; }
-  .col-small { width: 75px; }
-  .modal-content { font-size: 18px; max-width: 360px; }
-  #installButton { font-size: 20px; padding: 14px 22px; }
+@media (500px <= width <= 699px) {
+  .title               { font-size: 32px; }
+  th, td, input        { font-size: 22px; padding: 12px; }
+  .col-name            { min-width: 200px; }
+  .col-small           { width: 75px;  }
 }
-
 @media (min-width: 700px) {
-  .title { font-size: 36px; }
-  th, td, input {
-    font-size: 24px;
-    padding: 14px;
-  }
-  .col-name { min-width: 240px; }
-  .col-small { width: 90px; }
-  .modal-content { font-size: 20px; max-width: 400px; }
+  .title               { font-size: 36px; }
+  th, td, input        { font-size: 24px; padding: 14px; }
+  .col-name            { min-width: 240px; }
+  .col-small           { width: 90px;  }
 }
-
 
