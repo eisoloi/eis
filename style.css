@@ -22,7 +22,7 @@ body {
 .table-container::after {
   content: "";
   display: block;
-  height: 90px; /* Platz für Button-Leiste */
+  height: 150px; /* Platz für Button-Leiste */
 }
 
 table {
