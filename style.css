@@ -1,10 +1,10 @@
-/* ===================== Prevent Mobile Text Zoom ===================== */
+/* ===================== 1. Prevent Mobile Text Zoom ===================== */
 html {
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
 }
 
-/* ===================== Grid-Layout: Header / Content / Footer ===================== */
+/* ===================== 2. Grid-Layout: Header / Content / Footer ===================== */
 body {
   margin: 0;
   padding: 1em;
@@ -16,44 +16,43 @@ body {
   font-family: sans-serif;
 
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  overflow: hidden; /* kein Scroll für Body selbst */
+  grid-template-rows: auto 1fr auto; /* Titel / Tabelle / Buttons */
+  overflow: hidden; /* Verhindert Scroll am Body */
 }
 
-/* ========== Titel oben (Header) ========== */
+/* ===================== 3. Titel ganz oben ===================== */
 .title {
   grid-row: 1;
   font-size: 30px;
   margin: 0 0 0.5em;
   text-align: center;
-  flex-shrink: 0;
 }
 
-/* ========== Scrollbarer Content-Bereich ========== */
+/* ===================== 4. Scrollbarer Content-Bereich mit mittiger Tabelle ===================== */
 .table-container {
   grid-row: 2;
-  overflow-x: auto; /* optional: horizontales Scrollen */
-  overflow-y: auto; /* vertikales Scrollen */
+  display: flex;
+  justify-content: center;  /* Tabelle horizontal mittig */
+  align-items: center;      /* Tabelle vertikal mittig, bis sie größer als Container wird */
   padding: 0 12px;
+  padding-bottom: 120px;    /* Platz für 3 Zeilen unter der Tabelle */
   box-sizing: border-box;
 
-  /* Horizontal zentrieren: */
-  display: flex;
-  justify-content: center;
+  overflow-x: auto; /* horizontal scroll bei Bedarf */
+  overflow-y: auto; /* vertikal scroll */
 }
 
-/* ========== Die Tabelle ========== */
+/* ===================== 5. Tabelle selber ===================== */
 .table-container table {
   border-collapse: collapse;
-  /* füllt so viel wie möglich, zentriert sich aber: */
-  width: auto;
-  min-width: 100%;
-  max-width: 1000px;
-  margin: 0; 
+  width: auto;         /* wächst nur so weit wie nötig */
+  min-width: 100%;     /* füllt mindestens Container-Breite */
+  max-width: 1000px;   /* Obergrenze */
+  margin: 0;           /* Flex-Zentrierung übernimmt Mittigstellung */
   text-align: left;
 }
 
-/* ========== Sticky-Header-Zeilen ========== */
+/* ===================== 6. Sticky-Header für Überschriften ===================== */
 .table-container thead th {
   position: sticky;
   top: 0;
@@ -61,14 +60,14 @@ body {
   z-index: 2;
 }
 
-/* ========== Tabellenzellen ========== */
+/* ===================== 7. Zellenstil ===================== */
 th, td {
   border: 1px solid #444;
   padding: 10px;
   font-size: 20px;
 }
 
-/* ========== Inputs ========== */
+/* ===================== 8. Eingabefelder ===================== */
 input {
   width: 100%;
   font-size: 20px;
@@ -79,7 +78,7 @@ input {
   box-sizing: border-box;
 }
 
-/* ========== Buttons (immer sichtbar im Footer) ========== */
+/* ===================== 9. Footer-Leiste (Buttons) ===================== */
 .fixed-buttons {
   grid-row: 3;
   background-color: #181818;
@@ -88,7 +87,6 @@ input {
   border-top: 1px solid #444;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
 }
-
 .fixed-buttons button {
   margin: 5px 10px;
   padding: 16px 28px;
@@ -103,17 +101,16 @@ input {
 }
 .fixed-buttons button:hover {
   background-color: #a54020;
-  box-shadow: 0 0 6px rgba(255,255,255,0.2);
 }
 .fixed-buttons button:active {
   transform: scale(0.98);
 }
 
-/* ========== Spaltenbreiten-Klassen ========== */
+/* ===================== 10. Spaltenbreiten-Klassen ===================== */
 .col-name { min-width: 170px; }
 .col-small{ width: 60px;  }
 
-/* ========== Modal ========== */
+/* ===================== 11. Modal ===================== */
 .modal {
   display: none;
   position: fixed;
@@ -145,7 +142,7 @@ input {
   box-sizing: border-box;
 }
 
-/* ========== Speicher-Hinweis ========== */
+/* ===================== 12. Speicher-Hinweis ===================== */
 #saveNotice {
   display: none;
   margin-left: 10px;
@@ -162,28 +159,28 @@ input {
   100% { opacity: 0; }
 }
 
-/* ========== Responsive Anpassungen ========== */
+/* ===================== 13. Responsive Feintuning ===================== */
 @media (max-width: 400px) {
-  .title               { font-size: 24px; }
-  th, td, input        { font-size: 16px; }
-  .col-name            { min-width: 140px; }
-  .col-small           { width: 50px;  }
+  .title            { font-size: 24px; }
+  th, td, input     { font-size: 16px; }
+  .col-name         { min-width: 140px; }
+  .col-small        { width: 50px; }
 }
-@media (min-width: 401px) and (max-width: 499px) {
-  .title               { font-size: 28px; }
-  th, td, input        { font-size: 18px; }
-  .col-name            { min-width: 160px; }
-  .col-small           { width: 60px;  }
+@media (401px <= width <= 499px) {
+  .title            { font-size: 28px; }
+  th, td, input     { font-size: 18px; }
+  .col-name         { min-width: 160px; }
+  .col-small        { width: 60px; }
 }
-@media (min-width: 500px) and (max-width: 699px) {
-  .title               { font-size: 32px; }
-  th, td, input        { font-size: 22px; padding: 12px; }
-  .col-name            { min-width: 200px; }
-  .col-small           { width: 75px;  }
+@media (500px <= width <= 699px) {
+  .title            { font-size: 32px; }
+  th, td, input     { font-size: 22px; padding: 12px; }
+  .col-name         { min-width: 200px; }
+  .col-small        { width: 75px; }
 }
 @media (min-width: 700px) {
-  .title               { font-size: 36px; }
-  th, td, input        { font-size: 24px; padding: 14px; }
-  .col-name            { min-width: 240px; }
-  .col-small           { width: 90px;  }
+  .title            { font-size: 36px; }
+  th, td, input     { font-size: 24px; padding: 14px; }
+  .col-name         { min-width: 240px; }
+  .col-small        { width: 90px; }
 }
