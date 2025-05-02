@@ -47,7 +47,7 @@ button {
   margin: 10px 5px;
   padding: 14px 22px;
   font-size: 18px;
-  background-color: #db6a3b;
+  background-color: #2e2e2e;
   color: white;
   border: none;
   border-radius: 12px;
@@ -57,7 +57,7 @@ button {
 }
 
 button:hover {
-  background-color: #e57b50;
+  background-color: #3a3a3a;
 }
 
 button:active {
@@ -84,15 +84,16 @@ button:active {
 }
 
 .modal-content {
-  background-color: #2a2a2a;
+  background-color: #1e1e1e;
   color: white;
   margin: 50% auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 1px solid #444;
   width: 80%;
   max-width: 300px;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Dropdown im Modal */
@@ -108,17 +109,27 @@ button:active {
   box-sizing: border-box;
 }
 
-/* Hinweistext */
+/* Hinweistext direkt neben Speicher-Button */
 #saveNotice {
-  color: lightgreen;
   display: none;
-  margin-top: 10px;
-  text-align: center;
+  margin-left: 10px;
+  color: #4caf50;
+  font-size: 16px;
+  font-weight: bold;
+  vertical-align: middle;
+  animation: fadeOut 2s ease forwards;
+}
+
+@keyframes fadeOut {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* Installationsbutton */
 #installButton {
-  background-color: #ffa447;
+  background-color: #2e2e2e;
   color: white;
   border: none;
   border-radius: 12px;
@@ -131,7 +142,7 @@ button:active {
 }
 
 #installButton:hover {
-  background-color: #ffb366;
+  background-color: #3a3a3a;
 }
 
 #installButton:active {
@@ -158,7 +169,6 @@ button:active {
 
 /* Responsive für 5" bis 10" Displays */
 
-/* 1. Sehr kleine Handys (ca. 5") */
 @media (max-width: 400px) {
   .title {
     font-size: 24px;
@@ -177,7 +187,6 @@ button:active {
   }
 }
 
-/* 2. Normale Handys (ca. 6") */
 @media (min-width: 401px) and (max-width: 499px) {
   .title {
     font-size: 28px;
@@ -196,7 +205,6 @@ button:active {
   }
 }
 
-/* 3. Große Handys / kleine Tablets (6,5"–7,5") */
 @media (min-width: 500px) and (max-width: 699px) {
   .title {
     font-size: 32px;
@@ -226,7 +234,6 @@ button:active {
   }
 }
 
-/* 4. Große Tablets (8"–10") */
 @media (min-width: 700px) {
   .title {
     font-size: 36px;
