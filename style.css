@@ -1,9 +1,17 @@
+/* Verhindert automatische Text-Skalierung auf Mobilgeräten */
+html {
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
 body {
   background-color: #1e1e1e;
   color: white;
   font-family: sans-serif;
   margin: 0;
   padding: 1em;
+  overflow-x: hidden;
+  width: 100vw;
 }
 
 .title {
@@ -175,7 +183,6 @@ button:active {
 }
 
 /* Responsive für 5" bis 10" Displays */
-
 @media (max-width: 400px) {
   .title {
     font-size: 24px;
