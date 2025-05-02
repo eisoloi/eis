@@ -19,6 +19,12 @@ body {
   box-sizing: border-box;
 }
 
+.table-container::after {
+  content: "";
+  display: block;
+  height: 90px; /* Platz für Button-Leiste */
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -57,7 +63,8 @@ button {
 }
 
 button:hover {
-  background-color: #3a3a3a;
+  background-color: #4a4a4a;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
 }
 
 button:active {
@@ -155,12 +162,12 @@ button:active {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #1e1e1e;
+  background-color: #181818;
   padding: 10px 0;
   text-align: center;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
   z-index: 1000;
-  border-top: 1px solid #333;
+  border-top: 1px solid #444;
 }
 
 .fixed-buttons button {
