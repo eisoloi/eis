@@ -20,13 +20,15 @@ body {
   text-align: center;
 }
 
+/* Tabelle bleibt immer zentriert + scrollbar bei Bedarf */
 .table-container {
+  width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+  padding: 0 12px;
   display: flex;
   justify-content: center;
-  overflow-x: auto;
-  padding-left: 12px;
-  padding-right: 12px;
-  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-container::after {
@@ -35,13 +37,15 @@ body {
   height: 150px; /* Platz für Button-Leiste */
 }
 
+/* Fixe, zentrierte Tabelle */
 table {
   border-collapse: collapse;
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
+  width: 800px;               /* Feste Breite */
+  min-width: 800px;           /* Scrollbar ab <800px sichtbar */
+  table-layout: fixed;
 }
 
+/* Spaltenformate */
 th, td {
   border: 1px solid #444;
   padding: 10px;
@@ -58,7 +62,7 @@ input {
   box-sizing: border-box;
 }
 
-/* Modernes Button-Design */
+/* Button-Design */
 button {
   margin: 10px 5px;
   padding: 14px 22px;
@@ -82,13 +86,14 @@ button:active {
 }
 
 .col-name {
-  min-width: 170px;
+  width: 300px;
 }
 
 .col-small {
-  width: 60px;
+  width: 100px;
 }
 
+/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -126,7 +131,7 @@ button:active {
   box-sizing: border-box;
 }
 
-/* Hinweistext direkt neben Speicher-Button */
+/* Hinweistext */
 #saveNotice {
   display: none;
   margin-left: 10px;
@@ -184,7 +189,7 @@ button:active {
   margin: 5px 10px;
 }
 
-/* Responsive für 5" bis 10" Displays */
+/* Responsive für kleine Displays */
 @media (max-width: 400px) {
   .title {
     font-size: 24px;
@@ -195,82 +200,11 @@ button:active {
   }
 
   .col-name {
-    min-width: 140px;
+    width: 240px;
   }
 
   .col-small {
-    width: 50px;
-  }
-}
-
-@media (min-width: 401px) and (max-width: 499px) {
-  .title {
-    font-size: 28px;
-  }
-
-  th, td, input, button {
-    font-size: 18px;
-  }
-
-  .col-name {
-    min-width: 160px;
-  }
-
-  .col-small {
-    width: 60px;
-  }
-}
-
-@media (min-width: 500px) and (max-width: 699px) {
-  .title {
-    font-size: 32px;
-  }
-
-  th, td, input, button {
-    font-size: 22px;
-    padding: 12px;
-  }
-
-  .col-name {
-    min-width: 200px;
-  }
-
-  .col-small {
-    width: 75px;
-  }
-
-  .modal-content {
-    font-size: 18px;
-    max-width: 360px;
-  }
-
-  #installButton {
-    font-size: 20px;
-    padding: 14px 22px;
-  }
-}
-
-@media (min-width: 700px) {
-  .title {
-    font-size: 36px;
-  }
-
-  th, td, input, button {
-    font-size: 24px;
-    padding: 14px;
-  }
-
-  .col-name {
-    min-width: 240px;
-  }
-
-  .col-small {
-    width: 90px;
-  }
-
-  .modal-content {
-    font-size: 20px;
-    max-width: 400px;
+    width: 80px;
   }
 }
 
