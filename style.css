@@ -4,50 +4,51 @@ html {
   text-size-adjust: none;
 }
 
-/* ========== Body als Grid mit Header, Content-Bereich und Footer ========== */
+/* ========== Haupt-Layout mit Grid (Titel + Content) ========== */
 body {
-  background-color: #1e1e1e;
-  color: white;
-  font-family: sans-serif;
   margin: 0;
   padding: 1em;
   box-sizing: border-box;
   width: 100vw;
   height: 100vh;
+  background-color: #1e1e1e;
+  color: white;
+  font-family: sans-serif;
 
   display: grid;
-  grid-template-rows: auto 1fr; /* Titel-Reihe + Content-Reihe */
-  overflow: hidden;             /* verhindert Doppelscroll */
+  grid-template-rows: auto 1fr;
+  overflow: hidden; /* Kein Scroll am Body */
 }
 
-/* ========== Titel oben ========== */
+/* ========== Titel bleibt oben ========== */
 .title {
+  grid-row: 1;
   font-size: 30px;
   margin: 0 0 0.5em;
   text-align: center;
-  grid-row: 1; /* erste Grid-Zeile */
+  flex-shrink: 0;
 }
 
-/* ========== Content-Bereich mit vertikal/horizontal zentrierter Tabelle ========== */
+/* ========== Scrollbarer Content mit mittiger Tabelle ========== */
 .table-container {
-  grid-row: 2;                  /* zweite Grid-Zeile */
+  grid-row: 2;
   display: flex;
-  justify-content: center;      /* horizontal zentrieren */
-  align-items: center;          /* vertikal zentrieren */
-  width: 100%;
+  justify-content: center;  /* horizontal zentrieren */
+  align-items: center;      /* vertikal zentrieren */
   padding: 0 12px;
-  padding-bottom: 150px;        /* Platz für die fixe Button-Leiste */
+  padding-bottom: 120px;    /* Platz für 3 Tabellenzeilen unter dem Inhalt */
   box-sizing: border-box;
-  overflow-x: auto;             /* bei breiteren Tabellen horizontal scrollen */
-  overflow-y: auto;             /* bei hohen Tabellen vertikal scrollen */
+
+  overflow-x: auto; /* horizontal scroll bei zu breiter Tabelle */
+  overflow-y: auto; /* vertikal scroll */
 }
 
 /* ========== Tabelle ========== */
 .table-container table {
   border-collapse: collapse;
-  width: 100%;     /* wächst mit dem Container */
-  max-width: 1000px;
-  margin: 0;
+  width: 100%;      /* passt sich dem Container an */
+  max-width: none;  /* keine fixe Obergrenze */
+  margin: 0;        /* Flexzentrum übernimmt Zentrierung */
   text-align: left;
 }
 
@@ -56,7 +57,7 @@ body {
   position: sticky;
   top: 0;
   background-color: #1e1e1e;
-  z-index: 2;
+  z-index: 1;
 }
 
 /* ========== Zellenstil ========== */
@@ -87,12 +88,12 @@ button {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
 button:hover {
   background-color: #a54020;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 6px rgba(255,255,255,0.2);
 }
 button:active {
   transform: scale(0.98);
@@ -104,25 +105,28 @@ button:active {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #181818;
   padding: 10px 0;
   text-align: center;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
+  background-color: #181818;
   border-top: 1px solid #444;
-  z-index: 999;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.6);
+  z-index: 2;
+}
+.fixed-buttons button {
+  margin: 5px 10px;
 }
 
 /* ========== Spaltenbreiten ========== */
 .col-name { min-width: 170px; }
-.col-small{ width: 60px; }
+.col-small{ width: 60px;  }
 
 /* ========== Modal ========== */
 .modal {
   display: none;
   position: fixed;
-  z-index: 100;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0,0,0,0.6);
+  z-index: 3;
 }
 .modal-content {
   background-color: #1e1e1e;
@@ -134,7 +138,7 @@ button:active {
   max-width: 300px;
   text-align: center;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 .modal-content select {
   width: 100%;
@@ -172,13 +176,13 @@ button:active {
   .col-name            { min-width: 140px; }
   .col-small           { width: 50px;  }
 }
-@media (401px <= width <= 499px) {
+@media (min-width: 401px) and (max-width: 499px) {
   .title               { font-size: 28px; }
   th, td, input        { font-size: 18px; }
   .col-name            { min-width: 160px; }
   .col-small           { width: 60px;  }
 }
-@media (500px <= width <= 699px) {
+@media (min-width: 500px) and (max-width: 699px) {
   .title               { font-size: 32px; }
   th, td, input        { font-size: 22px; padding: 12px; }
   .col-name            { min-width: 200px; }
@@ -190,4 +194,3 @@ button:active {
   .col-name            { min-width: 240px; }
   .col-small           { width: 90px;  }
 }
-
