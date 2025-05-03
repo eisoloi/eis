@@ -1,6 +1,8 @@
+// Eistabelle Script mit Filter-Funktion A-Z
 const correctPassword = "eisp2";
 const storageKey = "eistabelleData";
 const loginKey = "eistabelleLoggedIn";
+
 const defaultSorten = [
   "Amadeus", "Amarena-Kirsch", "Ananas", "Ananas-Rosmarien", "Aperol Spritz", "Apfel", "Aprikose",
   "Bacio", "Banane", "Basil", "Biscoff (Spekulatius)", "Brownie",
@@ -25,12 +27,15 @@ const defaultSorten = [
   "Zabaione (Eierlikör)", "Zitrone"
 ];
 
+let currentFilter = null;
+
 window.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem(loginKey) === "true") {
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("app").style.display = "block";
     initializeData();
   }
+  generateLetterButtons();
 });
 
 function checkPassword() {
@@ -59,10 +64,12 @@ function loadData() {
   const data = JSON.parse(saved);
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
-  data.forEach(entry => {
-    const row = createRow(entry.name, entry.laden, entry.lager);
-    tableBody.appendChild(row);
-  });
+  data
+    .filter(entry => !currentFilter || entry.name.toUpperCase().startsWith(currentFilter))
+    .forEach(entry => {
+      const row = createRow(entry.name, entry.laden, entry.lager);
+      tableBody.appendChild(row);
+    });
   updateDeleteDropdown();
 }
 
@@ -134,7 +141,6 @@ function showSaveNotice() {
   notice.style.animation = "none";
   notice.offsetHeight;
   notice.style.animation = "fadeOut 2s ease forwards";
-
   setTimeout(() => {
     notice.style.display = "none";
   }, 2000);
@@ -145,4 +151,35 @@ document.addEventListener("input", () => {
     saveData();
   }
 });
+
+function showFilterModal() {
+  document.getElementById("filterModal").style.display = "block";
+}
+
+function hideFilterModal() {
+  document.getElementById("filterModal").style.display = "none";
+}
+
+function generateLetterButtons() {
+  const container = document.getElementById("letterButtons");
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  letters.forEach(letter => {
+    const btn = document.createElement("button");
+    btn.textContent = letter;
+    btn.style.minWidth = "28px";
+    btn.onclick = () => {
+      currentFilter = letter;
+      hideFilterModal();
+      loadData();
+    };
+    container.appendChild(btn);
+  });
+}
+
+function clearFilter() {
+  currentFilter = null;
+  hideFilterModal();
+  loadData();
+}
+
 
