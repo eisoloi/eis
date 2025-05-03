@@ -129,10 +129,11 @@ button:active {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
+/* Standard-Modal-Content */
 .modal-content {
   background-color: #2e2e2e;
   color: white;
-  margin: 25% auto; /* weiter unten */
+  margin: 25% auto;
   padding: 20px;
   border: 1px solid #555;
   width: 80%;
@@ -156,6 +157,52 @@ button:active {
   background-color: #a54020;
 }
 
+/* ✅ SPEZIELLES Styling NUR für das Lösch-Fenster */
+#deleteModal.modal-content {
+  margin: 35% auto;
+  background-color: #2e2e2e;
+  color: white;
+  padding: 20px;
+  border: 1px solid #555;
+  width: 80%;
+  max-width: 300px;
+  text-align: center;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+#deleteModal select {
+  width: 100%;
+  font-size: 18px;
+  padding: 12px;
+  margin-top: 12px;
+  background-color: #121212;
+  color: #ffcc00;
+  border: 1px solid #666;
+  border-radius: 10px;
+  appearance: none;
+}
+
+#deleteModal select option {
+  background-color: #1a1a1a;
+  color: #ffcc00;
+  font-size: 18px;
+}
+
+#deleteModal button {
+  background-color: #111;
+  color: white;
+  padding: 10px 16px;
+  margin: 10px 6px;
+  border-radius: 10px;
+  font-size: 16px;
+  border: 1px solid #444;
+}
+
+#deleteModal button:hover {
+  background-color: #a54020;
+}
+
 /* Speicherhinweis */
 #saveNotice {
   color: lightgreen;
@@ -163,7 +210,7 @@ button:active {
   margin-top: 10px;
 }
 
-/* Optional: responsive Anpassung für kleine Displays */
+/* Responsive für kleine Displays */
 @media (max-width: 400px) {
   th, td, input, button {
     font-size: 16px;
@@ -173,4 +220,3 @@ button:active {
     font-size: 24px;
   }
 }
-
