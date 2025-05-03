@@ -63,6 +63,25 @@ button:active {
   transform: scale(0.97);
 }
 
+/* Fixierte Button-Leiste am unteren Bildschirmrand */
+.fixed-buttons {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  background-color: #181818;
+  padding: 12px 0 12px 0;
+  text-align: center;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  border-top: 1px solid #444;
+}
+
+/* Buttons in der Leiste mit extra Abstand */
+.fixed-buttons button {
+  margin: 0 12px;
+}
+
 .col-name {
   min-width: 200px;
 }
@@ -98,6 +117,4 @@ button:active {
   color: lightgreen;
   display: none;
   margin-top: 10px;
-}
-
 }
