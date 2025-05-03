@@ -157,11 +157,23 @@ button:active {
   background-color: #a54020;
 }
 
-/* ✅ SPEZIELLES Styling NUR für das Lösch-Fenster */
-#deleteModal.modal-content {
-  margin: 35% auto;
-  background-color: #2e2e2e;
+/* --- Angepasstes Styling nur für das Löschfenster --- */
+#deleteModal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.3s ease-out;
+}
+
+#deleteModal .modal-content {
+  background-color: #2a2a2a;
   color: white;
+  margin: 20vh auto;
   padding: 20px;
   border: 1px solid #555;
   width: 80%;
@@ -169,38 +181,50 @@ button:active {
   text-align: center;
   border-radius: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.3s ease-out;
 }
 
 #deleteModal select {
   width: 100%;
-  font-size: 18px;
-  padding: 12px;
-  margin-top: 12px;
-  background-color: #121212;
+  padding: 10px;
+  font-size: 20px;
+  background-color: #333;
   color: #ffcc00;
-  border: 1px solid #666;
-  border-radius: 10px;
-  appearance: none;
+  border: 1px solid #555;
+  border-radius: 8px;
+  margin-bottom: 1em;
 }
 
-#deleteModal select option {
-  background-color: #1a1a1a;
-  color: #ffcc00;
-  font-size: 18px;
-}
-
-#deleteModal button {
-  background-color: #111;
+#deleteModal .modal-content button {
+  background-color: #242424;
   color: white;
   padding: 10px 16px;
   margin: 10px 6px;
   border-radius: 10px;
   font-size: 16px;
-  border: 1px solid #444;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
 }
 
-#deleteModal button:hover {
+#deleteModal .modal-content button:hover,
+#deleteModal .modal-content button:focus {
   background-color: #a54020;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  outline: none;
+  transform: scale(0.98);
+}
+
+/* Animationen */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 /* Speicherhinweis */
@@ -220,3 +244,4 @@ button:active {
     font-size: 24px;
   }
 }
+
