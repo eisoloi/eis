@@ -1,5 +1,4 @@
-
-const correctPassword = "eisp1";
+const correctPassword = "eisp2";
 const storageKey = "eistabelleData";
 const loginKey = "eistabelleLoggedIn";
 const defaultSorten = [
@@ -26,8 +25,6 @@ const defaultSorten = [
   "Zabaione (Eierlikör)", "Zitrone"
 ];
 
-
-// Start: automatisch einloggen, wenn schon mal eingeloggt
 window.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem(loginKey) === "true") {
     document.getElementById("loginScreen").style.display = "none";
@@ -81,9 +78,9 @@ function saveData() {
   const data = [];
   const rows = document.querySelectorAll("#tableBody tr");
   rows.forEach(row => {
-    const name = row.querySelector(".name").value;
     const laden = row.querySelector(".laden").value;
     const lager = row.querySelector(".lager").value;
+    const name = row.querySelector(".name").value;
     data.push({ name, laden, lager });
   });
   localStorage.setItem(storageKey, JSON.stringify(data));
@@ -93,9 +90,9 @@ function saveData() {
 function createRow(name, laden, lager) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
-    <td><input class="name" type="text" value="${name}"></td>
     <td><input class="laden" type="number" value="${laden}"></td>
     <td><input class="lager" type="number" value="${lager}"></td>
+    <td><input class="name" type="text" value="${name}"></td>
   `;
   return tr;
 }
@@ -134,8 +131,8 @@ function deleteRow() {
 function showSaveNotice() {
   const notice = document.getElementById("saveNotice");
   notice.style.display = "inline-block";
-  notice.style.animation = "none"; // Reset Animation
-  notice.offsetHeight; // Trigger Reflow
+  notice.style.animation = "none";
+  notice.offsetHeight;
   notice.style.animation = "fadeOut 2s ease forwards";
 
   setTimeout(() => {
@@ -143,10 +140,9 @@ function showSaveNotice() {
   }, 2000);
 }
 
-
-// Änderungen automatisch speichern
 document.addEventListener("input", () => {
   if (document.getElementById("app").style.display !== "none") {
     saveData();
   }
 });
+
