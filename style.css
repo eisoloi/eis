@@ -1,4 +1,3 @@
-/* Skalierung und Schriftgröße vollständig deaktivieren */
 html {
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
@@ -7,7 +6,6 @@ html {
   overflow-x: hidden;
 }
 
-/* Alles bleibt in fixen Breiten */
 body {
   background-color: #1e1e1e;
   color: white;
@@ -15,9 +13,7 @@ body {
   margin: 0;
   padding: 1em;
   text-align: center;
-  width: 290px;
-  max-width: 290px;
-  min-width: 290px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   overflow-x: hidden;
@@ -30,21 +26,19 @@ body {
 
 .table-container {
   overflow-y: auto;
-  max-height: calc(100vh - 220px); /* genug Platz für fixierte Buttons */
+  max-height: calc(100vh - 220px);
 }
 
 .table-container::after {
   content: "";
   display: block;
-  height: 200px; /* Scrollpuffer, damit letzte Zeile nie verdeckt wird */
+  height: 200px;
 }
 
 table {
   border-collapse: collapse;
-  width: 290px;
-  min-width: 290px;
-  max-width: 290px;
-  table-layout: fixed;
+  width: 100%;
+  table-layout: auto;
 }
 
 th,
@@ -81,7 +75,8 @@ button {
   transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
 }
 
-button:hover, button:focus {
+button:hover,
+button:focus {
   background-color: #a54020;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
   outline: none;
@@ -109,17 +104,11 @@ button:active {
   margin: 0 12px;
 }
 
-/* Feste Spaltenbreiten */
-.col-name {
-  width: 170px;
-  min-width: 170px;
-  max-width: 170px;
-}
-
+/* Keine festen Spaltenbreiten mehr */
+.col-name,
 .col-small {
-  width: 60px;
-  min-width: 60px;
-  max-width: 60px;
+  width: auto;
+  max-width: none;
 }
 
 /* Modal-Style */
