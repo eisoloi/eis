@@ -22,11 +22,17 @@ body {
   justify-content: center;
 }
 
+.table-container::after {
+  content: "";
+  display: block;
+  height: 180px; /* oder die Höhe deiner Button-Leiste, ggf. anpassen */
+}
+
 table {
   border-collapse: collapse;
-  width: 260px;          /* Feste Gesamtbreite: 140 + 60 + 60 */
-  min-width: 260px;
-  max-width: 260px;
+  width: 290px;          /* Feste Gesamtbreite: 170 + 60 + 60 */
+  min-width: 290px;
+  max-width: 290px;
   table-layout: fixed;   /* Feste Spalten */
 }
 
@@ -94,9 +100,9 @@ button:active {
 
 /* Spaltenbreiten: Eissorte 140px, Laden 60px, Lager 60px */
 .col-name {
-  width: 140px;
-  min-width: 140px;
-  max-width: 140px;
+  width: 170px;
+  min-width: 170px;
+  max-width: 170px;
 }
 
 .col-small {
