@@ -3,9 +3,27 @@ const correctPassword = "eisp1";
 const storageKey = "eistabelleData";
 const loginKey = "eistabelleLoggedIn";
 const defaultSorten = [
-  "Schokolade", "Vanille", "Erdbeer", "Himmelblau",
-  "Lila", "Mango", "Menta", "Cookies",
-  "Stracciatella", "Kinderschoko"
+  "Amadeus", "Amarena-Kirsch", "Ananas", "Ananas-Rosmarien", "Aperol Spritz", "Apfel", "Aprikose",
+  "Bacio", "Banane", "Basil", "Biscoff (Spekulatius)", "Brownie",
+  "Cassis", "Cherrymania", "Chocoprezel", "Choco bello", "Cookies", "Crema Italiana", "Cheesecake", "Cheesecake, Caramel, Cookies",
+  "Dulce de Leche", "dunkle Schokolade",
+  "Erdbeere", "Erdbeere-Prosecco", "Espresso-Chip", "Erdnuss-Karamell", "Erdnuss, Honig, Schoko", "Erdbeer-Karamell",
+  "Griesflammerie", "Gurke", "Granatapfel, Blutorange",
+  "Heidelbeere", "Himbeere", "Himbeere, Rhabarber", "Haselnuss", "Himmelblau",
+  "Indische Mango",
+  "Joghurt-Natur", "Joghurt-Orange", "Joghurt-Kirsche", "Joghurt-Gurke", "Joghurt-Maracuja",
+  "Kaki", "Kinde", "Kokosnuss", "Kokos-Limette", "Kiwi", "Kaktus-Feige", "Kastanie",
+  "Limette-Minze",
+  "Miss Purple (Süßkartoffel)", "Mandel", "Mandel-Krokant", "Malage", "Melone", "Menta",
+  "Orange-Basilikum", "Omas Apfelkuchen",
+  "Papaya", "Pistazie", "Praline-Haselnuss", "Pfirsich-Maracuja", "Pflaume-Zimt",
+  "Quark-Himbeere", "Quark-Holunder",
+  "Sacher-Art", "Sesamkrokant", "Schokolade", "salziges Karamell", "Stracciatella", "Schoko-Banane", "Schoko-Kirsch", "Schoko-Brezel",
+  "Tiramisu",
+  "Uhu",
+  "Vitaminbombe", "Vanille",
+  "Waldmeister", "Waldfrucht", "Walnuss-Feige", "weiße Schokolade",
+  "Zabaione (Eierlikör)", "Zitrone"
 ];
 
 // Start: automatisch einloggen, wenn schon mal eingeloggt
