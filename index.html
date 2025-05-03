@@ -16,6 +16,7 @@
   </script>
 </head>
 <body>
+  <!-- Login-Bereich -->
   <div id="loginScreen">
     <h2>Bitte Passwort eingeben</h2>
     <input
@@ -27,8 +28,10 @@
     <p id="loginError" style="color:red; display:none;">Falsches Passwort!</p>
   </div>
 
+  <!-- Haupt-App -->
   <div id="app" style="display:none;">
     <h1 class="title">Eistabelle</h1>
+
     <div class="table-wrapper">
       <div class="table-container">
         <table id="eisTable">
@@ -43,19 +46,33 @@
         </table>
       </div>
     </div>
+
+    <!-- Steuer-Buttons -->
     <div class="button-group fixed-buttons">
       <button onclick="showDeleteModal()">🗑️</button>
       <button onclick="addRow()">＋</button>
+      <button onclick="showFilterModal()">🔍</button>
       <button onclick="saveData()">💾</button>
       <span id="saveNotice">✅</span>
     </div>
 
+    <!-- Delete Modal -->
     <div id="deleteModal" class="modal">
       <div class="modal-content">
         <h3>Welche Eissorte möchtest du löschen?</h3>
         <select id="deleteSelect"></select><br><br>
         <button onclick="deleteRow()">Löschen</button>
         <button onclick="hideDeleteModal()">Abbrechen</button>
+      </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="modal">
+      <div class="modal-content">
+        <h3>Filter nach Anfangsbuchstabe</h3>
+        <div id="letterButtons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 1em;"></div>
+        <button onclick="clearFilter()">🔄 Filter zurücksetzen</button>
+        <button onclick="hideFilterModal()">Abbrechen</button>
       </div>
     </div>
   </div>
@@ -65,6 +82,7 @@
     <button id="installButton" style="display: none;">📲 App installieren</button>
   </div>
 
+  <!-- Scripte -->
   <script src="script.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
@@ -104,4 +122,5 @@
   </footer>
 </body>
 </html>
+
 
