@@ -1,4 +1,4 @@
-html {
+html, body, input, select, textarea, button {
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
 }
@@ -25,7 +25,7 @@ body {
 .table-container::after {
   content: "";
   display: block;
-  height: 180px; /* oder die Höhe deiner Button-Leiste, ggf. anpassen */
+  height: 300px; /* Extra Platz für Scrollen trotz Button-Leiste */
 }
 
 table {
@@ -87,7 +87,7 @@ button:active {
   bottom: 0;
   width: 100vw;
   background-color: #181818;
-  padding: 12px 0 12px 0;
+  padding: 12px 0;
   text-align: center;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
   z-index: 1000;
@@ -98,7 +98,7 @@ button:active {
   margin: 0 12px;
 }
 
-/* Spaltenbreiten: Eissorte 140px, Laden 60px, Lager 60px */
+/* Spaltenbreiten: Eissorte 170px, Laden 60px, Lager 60px */
 .col-name {
   width: 170px;
   min-width: 170px;
@@ -138,11 +138,4 @@ button:active {
   color: lightgreen;
   display: none;
   margin-top: 10px;
-}
-
-/* Abstand am Tabellenende für angenehmes Scrollen mit fixierter Button-Leiste */
-.table-container::after {
-  content: "";
-  display: block;
-  height: 180px; /* ca. 3 Tabellenzeilen Platz */
 }
