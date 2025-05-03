@@ -35,10 +35,22 @@ body {
   height: 200px;
 }
 
+/* Tabellenlayout mit festen Spaltenbreiten */
 table {
-  border-collapse: collapse;
   width: 100%;
-  table-layout: auto;
+  max-width: 290px;
+  margin: 0 auto;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th:nth-child(1), td:nth-child(1) {
+  width: 160px; /* Eissorte */
+}
+
+th:nth-child(2), td:nth-child(2),
+th:nth-child(3), td:nth-child(3) {
+  width: 65px;  /* Laden und Lager gleich breit */
 }
 
 th,
@@ -51,6 +63,7 @@ td {
   text-overflow: ellipsis;
 }
 
+/* Input-Felder */
 input {
   width: 100%;
   font-size: 20px;
@@ -104,13 +117,6 @@ button:active {
   margin: 0 12px;
 }
 
-/* Keine festen Spaltenbreiten mehr */
-.col-name,
-.col-small {
-  width: auto;
-  max-width: none;
-}
-
 /* Modal-Style */
 .modal {
   display: none;
@@ -140,3 +146,4 @@ button:active {
   display: none;
   margin-top: 10px;
 }
+
