@@ -7,6 +7,23 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
   <title>Eistabelle</title>
+  <style>
+    .hidden {
+      display: none;
+    }
+    #filterMenu button {
+      margin: 2px;
+      padding: 4px 8px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #filterMenu button:hover {
+      background-color: #666;
+    }
+  </style>
   <script>
     if (window.matchMedia('(display-mode: standalone)').matches) {
       if (!location.href.includes("homescreen=1")) {
@@ -34,7 +51,38 @@
         <table id="eisTable">
           <thead>
             <tr>
-              <th class="col-name">Eissorte</th>
+              <th class="col-name" id="sortenHeader" style="cursor:pointer; position:relative;">
+                Eissorte ▼
+                <div id="filterMenu" class="hidden" style="position:absolute; top:100%; left:0; background:#333; padding:5px; z-index:10;">
+                  <button onclick="filterByLetter('ALL')">ALLE</button>
+                  <button onclick="filterByLetter('A')">A</button>
+                  <button onclick="filterByLetter('B')">B</button>
+                  <button onclick="filterByLetter('C')">C</button>
+                  <button onclick="filterByLetter('D')">D</button>
+                  <button onclick="filterByLetter('E')">E</button>
+                  <button onclick="filterByLetter('F')">F</button>
+                  <button onclick="filterByLetter('G')">G</button>
+                  <button onclick="filterByLetter('H')">H</button>
+                  <button onclick="filterByLetter('I')">I</button>
+                  <button onclick="filterByLetter('J')">J</button>
+                  <button onclick="filterByLetter('K')">K</button>
+                  <button onclick="filterByLetter('L')">L</button>
+                  <button onclick="filterByLetter('M')">M</button>
+                  <button onclick="filterByLetter('N')">N</button>
+                  <button onclick="filterByLetter('O')">O</button>
+                  <button onclick="filterByLetter('P')">P</button>
+                  <button onclick="filterByLetter('Q')">Q</button>
+                  <button onclick="filterByLetter('R')">R</button>
+                  <button onclick="filterByLetter('S')">S</button>
+                  <button onclick="filterByLetter('T')">T</button>
+                  <button onclick="filterByLetter('U')">U</button>
+                  <button onclick="filterByLetter('V')">V</button>
+                  <button onclick="filterByLetter('W')">W</button>
+                  <button onclick="filterByLetter('X')">X</button>
+                  <button onclick="filterByLetter('Y')">Y</button>
+                  <button onclick="filterByLetter('Z')">Z</button>
+                </div>
+              </th>
               <th class="col-small">Laden</th>
               <th class="col-small">Lager</th>
             </tr>
@@ -75,7 +123,6 @@
       });
     }
 
-    // Installations-Prompt-Handling
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -97,6 +144,26 @@
         });
       }
     });
+
+    // Klick auf "Eissorte" zeigt/versteckt das Filter-Menü
+    document.getElementById("sortenHeader").addEventListener("click", () => {
+      const menu = document.getElementById("filterMenu");
+      menu.classList.toggle("hidden");
+    });
+
+    // Filterfunktion nach Anfangsbuchstabe oder "ALLE"
+    function filterByLetter(letter) {
+      const rows = document.querySelectorAll("#tableBody tr");
+      rows.forEach(row => {
+        const nameInput = row.querySelector(".name");
+        const name = nameInput ? nameInput.value.trim().toLowerCase() : "";
+        if (letter === "ALL" || name.startsWith(letter.toLowerCase())) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
   </script>
 
   <footer style="font-size:10px; margin-top:2em;">
@@ -104,4 +171,3 @@
   </footer>
 </body>
 </html>
-
