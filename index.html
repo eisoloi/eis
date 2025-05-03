@@ -1,126 +1,252 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#1e1e1e" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
   <title>Eistabelle</title>
-  <script>
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      if (!location.href.includes("homescreen=1")) {
-        location.replace("index.html?homescreen=1");
-      }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
     }
-  </script>
+    h1 {
+      text-align: center;
+    }
+    #loginScreen, #app, #deleteModal {
+      display: none;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table td, table th {
+      border: 1px solid #555;
+      padding: 8px;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #666;
+    }
+    button {
+      background-color: #444;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #666;
+    }
+    #saveNotice {
+      color: lightgreen;
+      margin-left: 10px;
+      display: none;
+      animation: fadeOut 2s ease forwards;
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    #deleteModal {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      border: 1px solid #666;
+      padding: 20px;
+      z-index: 100;
+    }
+  </style>
 </head>
 <body>
-  <!-- Login-Bereich -->
   <div id="loginScreen">
-    <h2>Bitte Passwort eingeben</h2>
-    <input
-      type="password"
-      id="passwordInput"
-      placeholder="Passwort"
-      onkeydown="if(event.key==='Enter') checkPassword()" />
-    <button onclick="checkPassword()">Bestätigen</button>
-    <p id="loginError" style="color:red; display:none;">Falsches Passwort!</p>
+    <h1>Eistabelle Login</h1>
+    <input id="passwordInput" type="password" placeholder="Passwort eingeben">
+    <button onclick="checkPassword()">Login</button>
+    <p id="loginError" style="color: red; display: none;">Falsches Passwort!</p>
   </div>
 
-  <!-- Haupt-App -->
-  <div id="app" style="display:none;">
-    <h1 class="title">Eistabelle</h1>
-
-    <div class="table-wrapper">
-      <div class="table-container">
-        <table id="eisTable">
-          <thead>
-            <tr>
-              <th class="col-name">Eissorte</th>
-              <th class="col-small">Laden</th>
-              <th class="col-small">Lager</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Steuer-Buttons -->
-    <div class="button-group fixed-buttons">
-      <button onclick="showDeleteModal()">🗑️</button>
-      <button onclick="addRow()">＋</button>
-      <button onclick="showFilterModal()">🔍</button>
-      <button onclick="saveData()">💾</button>
-      <span id="saveNotice">✅</span>
-    </div>
-
-    <!-- Delete Modal -->
-    <div id="deleteModal" class="modal">
-      <div class="modal-content">
-        <h3>Welche Eissorte möchtest du löschen?</h3>
-        <select id="deleteSelect"></select><br><br>
-        <button onclick="deleteRow()">Löschen</button>
-        <button onclick="hideDeleteModal()">Abbrechen</button>
-      </div>
-    </div>
-
-    <!-- Filter Modal -->
-    <div id="filterModal" class="modal">
-      <div class="modal-content">
-        <h3>Filter nach Anfangsbuchstabe</h3>
-        <div id="letterButtons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 1em;"></div>
-        <button onclick="clearFilter()">🔄 Filter zurücksetzen</button>
-        <button onclick="hideFilterModal()">Abbrechen</button>
-      </div>
-    </div>
+  <div id="app">
+    <h1>Eistabelle</h1>
+    <button onclick="addRow()">+ Sorte hinzufügen</button>
+    <button onclick="showDeleteModal()">– Sorte löschen</button>
+    <span id="saveNotice">✔️ Gespeichert</span>
+    <table>
+      <thead>
+        <tr>
+          <th>Laden</th>
+          <th>Lager</th>
+          <th>Sorte</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
   </div>
 
-  <!-- Installations-Button -->
-  <div style="text-align:center; margin-top: 1em;">
-    <button id="installButton" style="display: none;">📲 App installieren</button>
+  <div id="deleteModal">
+    <h3>Sorte löschen</h3>
+    <select id="deleteSelect"></select><br><br>
+    <button onclick="deleteRow()">Löschen</button>
+    <button onclick="hideDeleteModal()">Abbrechen</button>
   </div>
 
-  <!-- Scripte -->
-  <script src="script.js"></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(err => {
-          console.error("Service Worker Fehler:", err);
-        });
+    const correctPassword = "eisp2";
+    const storageKey = "eistabelleData";
+    const loginKey = "eistabelleLoggedIn";
+    const defaultSorten = [
+      "Amadeus", "Amarena-Kirsch", "Ananas", "Ananas-Rosmarien", "Aperol Spritz", "Apfel", "Aprikose",
+      "Bacio", "Banane", "Basil", "Biscoff (Spekulatius)", "Brownie",
+      "Cassis", "Cherrymania", "Chocoprezel", "Choco bello", "Cookies", "Crema Italiana", "Cheesecake", "Cheesecake, Caramel, Cookies",
+      "Dulce de Leche", "dunkle Schokolade",
+      "Erdbeere", "Erdbeere-Prosecco", "Espresso-Chip", "Erdnuss-Karamell", "Erdnuss, Honig, Schoko", "Erdbeer-Karamell",
+      "Griesflammerie", "Gurke", "Granatapfel, Blutorange",
+      "Heidelbeere", "Himbeere", "Himbeere, Rhabarber", "Haselnuss", "Himmelblau",
+      "Indische Mango",
+      "Joghurt-Natur", "Joghurt-Orange", "Joghurt-Kirsche", "Joghurt-Gurke", "Joghurt-Maracuja",
+      "Kaki", "Kinde", "Kokosnuss", "Kokos-Limette", "Kiwi", "Kaktus-Feige", "Kastanie",
+      "Limette-Minze",
+      "Miss Purple (Süßkartoffel)", "Mandel", "Mandel-Krokant", "Malage", "Melone", "Menta",
+      "Orange-Basilikum", "Omas Apfelkuchen",
+      "Papaya", "Pistazie", "Praline-Haselnuss", "Pfirsich-Maracuja", "Pflaume-Zimt",
+      "Quark-Himbeere", "Quark-Holunder",
+      "Sacher-Art", "Sesamkrokant", "Schokolade", "salziges Karamell", "Stracciatella", "Schoko-Banane", "Schoko-Kirsch", "Schoko-Brezel",
+      "Tiramisu", "Uhu", "Vitaminbombe", "Vanille", "Waldmeister", "Waldfrucht", "Walnuss-Feige", "weiße Schokolade",
+      "Zabaione (Eierlikör)", "Zitrone"
+    ];
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem(loginKey) === "true") {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        initializeData();
+      } else {
+        document.getElementById("loginScreen").style.display = "block";
+      }
+    });
+
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      if (input === correctPassword) {
+        localStorage.setItem(loginKey, "true");
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        initializeData();
+      } else {
+        document.getElementById("loginError").style.display = "block";
+      }
+    }
+
+    function initializeData() {
+      if (!localStorage.getItem(storageKey)) {
+        const data = defaultSorten.map(name => ({ name, laden: "", lager: "" }));
+        localStorage.setItem(storageKey, JSON.stringify(data));
+      }
+      loadData();
+    }
+
+    function loadData() {
+      const saved = localStorage.getItem(storageKey);
+      if (!saved) return;
+      const data = JSON.parse(saved);
+      const tableBody = document.getElementById("tableBody");
+      tableBody.innerHTML = "";
+      data.forEach(entry => {
+        const row = createRow(entry.name, entry.laden, entry.lager);
+        tableBody.appendChild(row);
+      });
+      updateDeleteDropdown();
+    }
+
+    function createRow(name, laden, lager) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input class="laden" type="number" value="${laden}"></td>
+        <td><input class="lager" type="number" value="${lager}"></td>
+        <td><input class="name" type="text" value="${name}"></td>
+      `;
+      return tr;
+    }
+
+    function addRow() {
+      const tableBody = document.getElementById("tableBody");
+      const row = createRow("", "", "");
+      tableBody.appendChild(row);
+      updateDeleteDropdown();
+      saveData();
+    }
+
+    function saveData() {
+      const data = [];
+      const rows = document.querySelectorAll("#tableBody tr");
+      rows.forEach(row => {
+        const laden = row.querySelector(".laden").value;
+        const lager = row.querySelector(".lager").value;
+        const name = row.querySelector(".name").value;
+        data.push({ name, laden, lager });
+      });
+      localStorage.setItem(storageKey, JSON.stringify(data));
+      showSaveNotice();
+    }
+
+    function showSaveNotice() {
+      const notice = document.getElementById("saveNotice");
+      notice.style.display = "inline-block";
+      notice.style.animation = "none";
+      notice.offsetHeight;
+      notice.style.animation = "fadeOut 2s ease forwards";
+      setTimeout(() => {
+        notice.style.display = "none";
+      }, 2000);
+    }
+
+    function showDeleteModal() {
+      updateDeleteDropdown();
+      document.getElementById("deleteModal").style.display = "block";
+    }
+
+    function hideDeleteModal() {
+      document.getElementById("deleteModal").style.display = "none";
+    }
+
+    function updateDeleteDropdown() {
+      const select = document.getElementById("deleteSelect");
+      select.innerHTML = "";
+      const rows = document.querySelectorAll("#tableBody tr");
+      rows.forEach((row, index) => {
+        const name = row.querySelector(".name").value;
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = name || "Sorte " + (index + 1);
+        select.appendChild(option);
       });
     }
 
-    // Installations-Prompt-Handling
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const installBtn = document.getElementById('installButton');
-      if (installBtn) {
-        installBtn.style.display = 'inline-block';
-        installBtn.addEventListener('click', () => {
-          installBtn.style.display = 'none';
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('App wurde zur Installation akzeptiert.');
-            } else {
-              console.log('App-Installation wurde abgelehnt.');
-            }
-            deferredPrompt = null;
-          });
-        });
+    function deleteRow() {
+      const index = document.getElementById("deleteSelect").value;
+      const rows = document.querySelectorAll("#tableBody tr");
+      if (rows[index]) {
+        rows[index].remove();
+        saveData();
+        updateDeleteDropdown();
+        hideDeleteModal();
+      }
+    }
+
+    document.addEventListener("input", () => {
+      if (document.getElementById("app").style.display !== "none") {
+        saveData();
       }
     });
   </script>
-
-  <footer style="font-size:10px; margin-top:2em;">
-    Icon von <a href="https://icons8.com" target="_blank" style="color:white;">Icons8</a>
-  </footer>
 </body>
 </html>
-
-
