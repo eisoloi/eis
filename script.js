@@ -149,3 +149,23 @@ document.addEventListener("input", () => {
     saveData();
   }
 });
+
+// Klick auf "Eissorten" zeigt oder versteckt das Filter-Menü
+document.getElementById("sortenHeader").addEventListener("click", () => {
+  const menu = document.getElementById("filterMenu");
+  menu.classList.toggle("hidden");
+});
+
+// Filterfunktion nach Buchstabe oder "ALLE"
+function filterByLetter(letter) {
+  const rows = document.querySelectorAll("#tableBody tr");
+  rows.forEach(row => {
+    const name = row.querySelector(".name").value.trim().toLowerCase();
+    if (letter === "ALL" || name.startsWith(letter.toLowerCase())) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+}
+
