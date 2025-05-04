@@ -22,6 +22,21 @@ body {
   margin-left: auto;
   margin-right: auto;
   overflow-x: hidden;
+  font-size: 18px; /* Standardgröße */
+}
+
+/* ========== Schriftgrößen-Klassen für manuelle Zuweisung ========== */
+.small-ui {
+  font-size: 14px;
+}
+.medium-ui {
+  font-size: 18px;
+}
+.large-ui {
+  font-size: 22px;
+}
+.extra-large-ui {
+  font-size: 26px;
 }
 
 /* ========== Überschrift ========== */
@@ -197,12 +212,47 @@ button:active {
   transform: translateY(0);
 }
 
-/* ========== Responsive Anpassungen ========== */
-@media (max-width: 400px) {
-  th, td, input, button {
+/* ========== Automatische Schriftgrößen-Anpassung ========== */
+
+/* Sehr kleine Bildschirme oder alte Geräte */
+@media screen and (max-width: 400px) {
+  body {
     font-size: 16px;
   }
   .title {
+    font-size: 22px;
+  }
+  th, td, input, button {
+    font-size: 16px;
+  }
+}
+
+/* Mittelgroße Bildschirme */
+@media screen and (min-width: 401px) and (max-width: 800px) {
+  body {
+    font-size: 18px;
+  }
+  .title {
+    font-size: 26px;
+  }
+}
+
+/* Große Bildschirme (Desktop oder Tablet quer) */
+@media screen and (min-width: 801px) {
+  body {
+    font-size: 20px;
+  }
+  .title {
+    font-size: 28px;
+  }
+}
+
+/* Sonderfall: Hoher Zoom oder sehr große Schriftgrößen */
+@media screen and (min-width: 300px) and (max-height: 400px) {
+  body {
     font-size: 24px;
+  }
+  .title {
+    font-size: 30px;
   }
 }
