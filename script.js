@@ -148,3 +148,14 @@ document.addEventListener("input", () => {
     saveData();
   }
 });
+
+document.getElementById("filterInput").addEventListener("input", () => {
+  const filter = document.getElementById("filterInput").value.toLowerCase();
+  const rows = document.querySelectorAll("#tableBody tr");
+
+  rows.forEach(row => {
+    const name = row.querySelector(".name").value.toLowerCase();
+    row.style.display = name.includes(filter) ? "" : "none";
+  });
+});
+
