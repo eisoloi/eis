@@ -44,12 +44,12 @@ table {
 }
 
 th:nth-child(1), td:nth-child(1) {
-  width: 160px;
+  width: 180px;
 }
 
 th:nth-child(2), td:nth-child(2),
 th:nth-child(3), td:nth-child(3) {
-  width: 65px;
+  width: 70px;
 }
 
 th, td {
