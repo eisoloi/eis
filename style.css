@@ -1,3 +1,8 @@
+/* ========== Globale Stile ========== */
+* {
+  box-sizing: border-box;
+}
+
 html {
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
@@ -19,16 +24,17 @@ body {
   overflow-x: hidden;
 }
 
+/* ========== Überschrift ========== */
 .title {
   font-size: 28px;
   margin-bottom: 0.5em;
 }
 
+/* ========== Tabellenbereich ========== */
 .table-container {
   overflow-y: auto;
   max-height: calc(100vh - 220px);
 }
-
 .table-container::after {
   content: "";
   display: block;
@@ -36,20 +42,19 @@ body {
 }
 
 table {
-  width: 60%;
-  max-width: 290px;
+  width: 100%;
+  max-width: 600px;
   margin: 0 auto;
   table-layout: fixed;
   border-collapse: collapse;
 }
 
 th:nth-child(1), td:nth-child(1) {
-  width: 180px;
+  width: 60%;
 }
-
 th:nth-child(2), td:nth-child(2),
 th:nth-child(3), td:nth-child(3) {
-  width: 70px;
+  width: 20%;
 }
 
 th, td {
@@ -61,16 +66,17 @@ th, td {
   text-overflow: ellipsis;
 }
 
+/* ========== Eingabefelder ========== */
 input {
   width: 100%;
   font-size: 20px;
-  background-color: #2a2a2a;
+  background-color: #333;
   color: white;
   border: none;
   padding: 5px;
-  box-sizing: border-box;
 }
 
+/* ========== Buttons ========== */
 button {
   margin: 10px 5px;
   padding: 14px 22px;
@@ -86,8 +92,8 @@ button {
 
 button:hover,
 button:focus {
-  background-color: #a54020;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  background-color: #ff5c33;
+  box-shadow: 0 0 12px rgba(255, 92, 51, 0.4);
   outline: none;
 }
 
@@ -95,6 +101,7 @@ button:active {
   transform: scale(0.97);
 }
 
+/* ========== Fixierte Button-Leiste unten ========== */
 .fixed-buttons {
   position: fixed;
   left: 0;
@@ -112,7 +119,7 @@ button:active {
   margin: 0 12px;
 }
 
-/* Standard-Modalfenster */
+/* ========== Standard-Modalfenster ========== */
 .modal {
   display: none;
   position: fixed;
@@ -150,34 +157,14 @@ button:active {
 }
 
 .modal-content button:hover {
-  background-color: #a54020;
+  background-color: #ff5c33;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
 }
 
-/* ✅ Spezielles Lösch-Fenster */
-#deleteModal {
-  display: none;
-  position: fixed;
-  z-index: 2000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
+/* ========== Spezielles Löschfenster ========== */
 #deleteModal .modal-content {
-  background-color: #181818; /* passt zur Buttonleiste */
-  color: white;
-  margin: 20vh auto;
-  padding: 20px;
+  background-color: #181818;
   border: 1px solid #444;
-  width: 80%;
-  max-width: 300px;
-  text-align: center;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
-  /* keine langsame Animation mehr */
 }
 
 #deleteModal select {
@@ -197,36 +184,24 @@ button:active {
   font-size: 18px;
 }
 
-#deleteModal button {
-  background-color: #262626;
-  color: white;
-  padding: 10px 16px;
-  margin: 10px 6px;
-  border-radius: 10px;
-  font-size: 16px;
-  border: none;
-  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-#deleteModal button:hover {
-  background-color: #a54020;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
-}
-
-/* Hinweis */
+/* ========== Speichern-Hinweis ========== */
 #saveNotice {
   color: lightgreen;
-  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
   margin-top: 10px;
 }
+#saveNotice.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-/* Responsive */
+/* ========== Responsive Anpassungen ========== */
 @media (max-width: 400px) {
   th, td, input, button {
     font-size: 16px;
   }
-
   .title {
     font-size: 24px;
   }
