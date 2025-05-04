@@ -133,13 +133,11 @@ function deleteRow() {
 
 function showSaveNotice() {
   const notice = document.getElementById("saveNotice");
-  notice.style.display = "inline-block";
-  notice.style.animation = "none"; // Reset Animation
-  notice.offsetHeight; // Trigger Reflow
-  notice.style.animation = "fadeOut 2s ease forwards";
+  notice.classList.add("show");
+  clearTimeout(notice._hideTimeout); // vorhandenen Timeout zurücksetzen, falls aktiv
 
-  setTimeout(() => {
-    notice.style.display = "none";
+  notice._hideTimeout = setTimeout(() => {
+    notice.classList.remove("show");
   }, 2000);
 }
 
