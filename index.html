@@ -19,7 +19,7 @@
 <body>
 
   <!-- Startbildschirm -->
-  <div id="startScreen">
+  <div id="startScreen" style="display:none;">
     <h1>Willkommen beim<br><b>Eiscafé Nico</b><br>Eis-Bestandsliste</h1>
     <button onclick="startApp()">Weiter</button>
     <button id="installButton" style="display: none;">📲 App installieren</button>
@@ -62,13 +62,31 @@
 
   <script src="script.js"></script>
   <script>
+    const startScreenKey = "eistabelleVisited";
+
     function startApp() {
-      document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
+      localStorage.setItem(startScreenKey, "1");
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("app").style.display = "block";
       if (typeof initializeData === 'function') {
         initializeData();
       }
     }
+
+    // Startbildschirm nur einmal pro Benutzer zeigen
+    window.addEventListener("DOMContentLoaded", () => {
+      const visited = localStorage.getItem(startScreenKey);
+      if (visited) {
+        document.getElementById("startScreen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        if (typeof initializeData === 'function') {
+          initializeData();
+        }
+      } else {
+        document.getElementById("startScreen").style.display = "block";
+        document.getElementById("app").style.display = "none";
+      }
+    });
 
     // Service Worker Registrierung
     if ('serviceWorker' in navigator) {
@@ -85,7 +103,6 @@
       e.preventDefault();
       deferredPrompt = e;
 
-      // Überprüfen, ob der Installationsbutton schon einmal angezeigt wurde
       if (!localStorage.getItem('homescreenShown')) {
         const installBtn = document.getElementById('installButton');
         if (installBtn) {
@@ -100,7 +117,6 @@
                 console.log('App-Installation wurde abgelehnt.');
               }
               deferredPrompt = null;
-              // Markieren, dass der Installationsbutton angezeigt wurde
               localStorage.setItem('homescreenShown', 'true');
             });
           });
@@ -108,14 +124,13 @@
       }
     });
 
-    // Button für Installation nur im Standalone-Modus anzeigen
+    // Install-Button nur im Standalone-Modus ausblenden
     if (window.matchMedia('(display-mode: standalone)').matches) {
       document.getElementById('installButton').style.display = 'none';
     }
 
-    // Falls die Daten gelöscht werden (z.B. durch Browser-Caches löschen), den Button wieder anzeigen
+    // Fallback-Buttonanzeige bei Datenlöschung
     window.addEventListener("load", () => {
-      // Falls homescreenShown nicht gesetzt ist, den Button anzeigen
       if (!localStorage.getItem('homescreenShown')) {
         const installBtn = document.getElementById('installButton');
         if (installBtn) {
