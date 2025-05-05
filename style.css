@@ -37,19 +37,19 @@ body {
 
 table {
   width: 60%;
-  max-width: 290px;
+  max-width: 250px;
   margin: 0 auto;
   table-layout: fixed;
   border-collapse: collapse;
 }
 
 th:nth-child(1), td:nth-child(1) {
-  width: 180px;
+  width: 150px;
 }
 
 th:nth-child(2), td:nth-child(2),
 th:nth-child(3), td:nth-child(3) {
-  width: 70px;
+  width: 40px;
 }
 
 th, td {
