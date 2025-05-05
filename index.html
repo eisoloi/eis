@@ -16,17 +16,17 @@
   </script>
 </head>
 <body>
-  <div id="loginScreen">
-    <h2>Bitte Passwort eingeben</h2>
-    <input
-      type="password"
-      id="passwordInput"
-      placeholder="Passwort"
-      onkeydown="if(event.key==='Enter') checkPassword()" />
-    <button onclick="checkPassword()">Bestätigen</button>
-    <p id="loginError" style="color:red; display:none;">Falsches Passwort!</p>
+
+  <!-- Startbildschirm -->
+  <div id="startScreen">
+    <h1 style="text-align:center; margin-top: 2em;">Willkommen beim<br><b>Eiscafé Nico</b><br>Eis-Bestandsliste</h1>
+    <div style="text-align:center; margin-top: 2em;">
+      <button onclick="startApp()">Weiter</button>
+      <button id="installButton" style="display: none; margin-top: 1em;">📲 App installieren</button>
+    </div>
   </div>
 
+  <!-- App-Inhalt -->
   <div id="app" style="display:none;">
     <h1 class="title">Eistabelle</h1>
     <div class="table-wrapper">
@@ -43,6 +43,7 @@
         </table>
       </div>
     </div>
+
     <div class="button-group fixed-buttons">
       <button onclick="showDeleteModal()">🗑️</button>
       <button onclick="addRow()">＋</button>
@@ -60,13 +61,18 @@
     </div>
   </div>
 
-  <!-- Installations-Button -->
-  <div style="text-align:center; margin-top: 1em;">
-    <button id="installButton" style="display: none;">📲 App installieren</button>
-  </div>
-
   <script src="script.js"></script>
   <script>
+    // Startbildschirm wechseln
+    function startApp() {
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      if (typeof initializeData === 'function') {
+        initializeData(); // aus script.js
+      }
+    }
+
+    // Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').catch(err => {
@@ -99,8 +105,9 @@
     });
   </script>
 
-  <footer style="font-size:10px; margin-top:2em;">
+  <footer style="font-size:10px; margin-top:2em; text-align:center;">
     Icon von <a href="https://icons8.com" target="_blank" style="color:white;">Icons8</a>
   </footer>
 </body>
 </html>
+
