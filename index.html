@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -20,7 +19,6 @@
 <body>
 
   <!-- Startbildschirm -->
-
   <div id="startScreen">
     <h1>Willkommen beim<br><b>Eiscafé Nico</b><br>Eis-Bestandsliste</h1>
     <button onclick="startApp()">Weiter</button>
@@ -28,7 +26,6 @@
   </div>
 
   <!-- App-Inhalt -->
-
   <div id="app" style="display:none;">
     <h1 class="title">Eistabelle</h1>
     <div class="table-wrapper">
@@ -46,28 +43,24 @@
       </div>
     </div>
 
-```
-<div class="button-group fixed-buttons">
-  <button onclick="showDeleteModal()">🗑️</button>
-  <button onclick="addRow()">＋</button>
-  <button onclick="saveData()">💾</button>
-  <span id="saveNotice">✅</span>
-</div>
+    <div class="button-group fixed-buttons">
+      <button onclick="showDeleteModal()">🗑️</button>
+      <button onclick="addRow()">＋</button>
+      <button onclick="saveData()">💾</button>
+      <span id="saveNotice">✅</span>
+    </div>
 
-<div id="deleteModal" class="modal">
-  <div class="modal-content">
-    <h3>Welche Eissorte möchtest du löschen?</h3>
-    <select id="deleteSelect"></select><br><br>
-    <button onclick="deleteRow()">Löschen</button>
-    <button onclick="hideDeleteModal()">Abbrechen</button>
-  </div>
-</div>
-```
-
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <h3>Welche Eissorte möchtest du löschen?</h3>
+        <select id="deleteSelect"></select><br><br>
+        <button onclick="deleteRow()">Löschen</button>
+        <button onclick="hideDeleteModal()">Abbrechen</button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
-
   <script>
     function startApp() {
       document.getElementById('startScreen').style.display = 'none';
@@ -108,6 +101,11 @@
         });
       }
     });
+
+    // Button für Installation nur im Standalone-Modus anzeigen
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      document.getElementById('installButton').style.display = 'none';
+    }
   </script>
 
   <footer>
@@ -116,4 +114,3 @@
 
 </body>
 </html>
-
