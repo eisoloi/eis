@@ -28,7 +28,9 @@ const defaultSorten = [
 
 // Starte App (auch von HTML aufgerufen)
 function startApp() {
-  localStorage.setItem(startScreenKey, "1");
+  if (!localStorage.getItem(startScreenKey)) {
+    localStorage.setItem(startScreenKey, "1");
+  }
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("app").style.display = "block";
   initializeData();
@@ -36,7 +38,8 @@ function startApp() {
 
 // Startbildschirm nur einmal anzeigen
 window.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem(startScreenKey)) {
+  const visited = localStorage.getItem(startScreenKey);
+  if (visited) {
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("app").style.display = "block";
     initializeData();
