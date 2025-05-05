@@ -112,6 +112,17 @@
     if (window.matchMedia('(display-mode: standalone)').matches) {
       document.getElementById('installButton').style.display = 'none';
     }
+
+    // Falls die Daten gelöscht werden (z.B. durch Browser-Caches löschen), den Button wieder anzeigen
+    window.addEventListener("load", () => {
+      // Falls homescreenShown nicht gesetzt ist, den Button anzeigen
+      if (!localStorage.getItem('homescreenShown')) {
+        const installBtn = document.getElementById('installButton');
+        if (installBtn) {
+          installBtn.style.display = 'inline-block';
+        }
+      }
+    });
   </script>
 
   <footer>
