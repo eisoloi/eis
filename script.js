@@ -28,7 +28,7 @@ const defaultSorten = [
 
 // App starten (per Button vom Startbildschirm)
 function startApp() {
-  localStorage.setItem(startScreenKey, "1"); // Als besucht markieren
+  localStorage.setItem(startScreenKey, "1");
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("app").style.display = "block";
   initializeData();
@@ -47,12 +47,26 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Daten initialisieren, wenn leer
+// Daten initialisieren und neue Sorten ergänzen
 function initializeData() {
-  if (!localStorage.getItem(storageKey)) {
-    const data = defaultSorten.map(name => ({ name, iH: "", aH: "" }));
-    localStorage.setItem(storageKey, JSON.stringify(data));
+  let existingData = [];
+  const saved = localStorage.getItem(storageKey);
+
+  if (saved) {
+    try {
+      existingData = JSON.parse(saved);
+    } catch (e) {
+      console.error("Fehler beim Parsen der gespeicherten Daten:", e);
+    }
   }
+
+  const updatedNames = new Set(existingData.map(entry => entry.name));
+  const newEntries = defaultSorten
+    .filter(name => !updatedNames.has(name))
+    .map(name => ({ name, iH: "", aH: "" }));
+
+  const mergedData = [...existingData, ...newEntries];
+  localStorage.setItem(storageKey, JSON.stringify(mergedData));
   loadData();
 }
 
