@@ -1,73 +1,52 @@
-// Lokaler Speicher-Schlüssel
 const storageKey = "eistabelleData";
+const startScreenKey = "eistabelleVisited";
 
 // Alphabetisch sortierte Eissorten mit Überschriften
 const defaultSorten = [
-  "A",
-  "Amadeus", "Amarena-Kirsch", "Ananas", "Ananas-Rosmarien", "Aperol Spritz", "Apfel", "Aprikose",
-  "B",
-  "Bacio", "Banane", "Basil", "Biscoff (Spekulatius)", "Brownie",
-  "C",
-  "Cassis", "Cherrymania", "Chocoprezel", "Choco bello", "Cookies", "Crema Italiana", "Cheesecake", "Cheesecake, Caramel, Cookies",
-  "D",
-  "Dulce de Leche", "dunkle Schokolade",
-  "E",
-  "Erdbeere", "Erdbeere-Prosecco", "Espresso-Chip", "Erdnuss-Karamell", "Erdnuss, Honig, Schoko", "Erdbeer-Karamell",
-  "G",
-  "Griesflammerie", "Gurke", "Granatapfel, Blutorange",
-  "H",
-  "Heidelbeere", "Himbeere", "Himbeere, Rhabarber", "Haselnuss", "Himmelblau",
-  "I",
-  "Indische Mango",
-  "J",
-  "Joghurt-Natur", "Joghurt-Orange", "Joghurt-Kirsche", "Joghurt-Gurke", "Joghurt-Maracuja",
-  "K",
-  "Kaki", "Kinde", "Kokosnuss", "Kokos-Limette", "Kiwi", "Kaktus-Feige", "Kastanie",
-  "L",
-  "Limette-Minze",
-  "M",
-  "Miss Purple (Süßkartoffel)", "Mandel", "Mandel-Krokant", "Malage", "Melone", "Menta",
-  "O",
-  "Orange-Basilikum", "Omas Apfelkuchen",
-  "P",
-  "Papaya", "Pistazie", "Praline-Haselnuss", "Pfirsich-Maracuja", "Pflaume-Zimt",
-  "Q",
-  "Quark-Himbeere", "Quark-Holunder",
-  "S",
-  "Sacher-Art", "Sesamkrokant", "Schokolade", "salziges Karamell", "Stracciatella", "Schoko-Banane", "Schoko-Kirsch", "Schoko-Brezel",
-  "T",
-  "Tiramisu",
-  "U",
-  "Uhu",
-  "V",
-  "Vitaminbombe", "Vanille",
-  "W",
-  "Waldmeister", "Waldfrucht", "Walnuss-Feige", "weiße Schokolade",
-  "Z",
-  "Zabaione (Eierlikör)", "Zitrone"
+  "A", "Amadeus", "Amarena-Kirsch", "Ananas", "Ananas-Rosmarien", "Aperol Spritz", "Apfel", "Aprikose",
+  "B", "Bacio", "Banane", "Basil", "Biscoff (Spekulatius)", "Brownie",
+  "C", "Cassis", "Cherrymania", "Chocoprezel", "Choco bello", "Cookies", "Crema Italiana", "Cheesecake", "Cheesecake, Caramel, Cookies",
+  "D", "Dulce de Leche", "dunkle Schokolade",
+  "E", "Erdbeere", "Erdbeere-Prosecco", "Espresso-Chip", "Erdnuss-Karamell", "Erdnuss, Honig, Schoko", "Erdbeer-Karamell",
+  "G", "Griesflammerie", "Gurke", "Granatapfel, Blutorange",
+  "H", "Heidelbeere", "Himbeere", "Himbeere, Rhabarber", "Haselnuss", "Himmelblau",
+  "I", "Indische Mango",
+  "J", "Joghurt-Natur", "Joghurt-Orange", "Joghurt-Kirsche", "Joghurt-Gurke", "Joghurt-Maracuja",
+  "K", "Kaki", "Kinde", "Kokosnuss", "Kokos-Limette", "Kiwi", "Kaktus-Feige", "Kastanie",
+  "L", "Limette-Minze",
+  "M", "Miss Purple (Süßkartoffel)", "Mandel", "Mandel-Krokant", "Malage", "Melone", "Menta",
+  "O", "Orange-Basilikum", "Omas Apfelkuchen",
+  "P", "Papaya", "Pistazie", "Praline-Haselnuss", "Pfirsich-Maracuja", "Pflaume-Zimt",
+  "Q", "Quark-Himbeere", "Quark-Holunder",
+  "S", "Sacher-Art", "Sesamkrokant", "Schokolade", "salziges Karamell", "Stracciatella", "Schoko-Banane", "Schoko-Kirsch", "Schoko-Brezel",
+  "T", "Tiramisu",
+  "U", "Uhu",
+  "V", "Vitaminbombe", "Vanille",
+  "W", "Waldmeister", "Waldfrucht", "Walnuss-Feige", "weiße Schokolade",
+  "Z", "Zabaione (Eierlikör)", "Zitrone"
 ];
+
+// Starte App (auch von HTML aufgerufen)
+function startApp() {
+  localStorage.setItem(startScreenKey, "1");
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  initializeData();
+}
 
 // Startbildschirm nur einmal anzeigen
 window.addEventListener("DOMContentLoaded", () => {
-  const hasSeenStart = localStorage.getItem("startScreenSeen");
-  if (hasSeenStart) {
+  if (localStorage.getItem(startScreenKey)) {
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("app").style.display = "block";
     initializeData();
   } else {
     document.getElementById("startScreen").style.display = "block";
+    document.getElementById("app").style.display = "none";
   }
 });
 
-// Startfunktion bei Klick auf "Weiter"
-function startApp() {
-  document.getElementById("startScreen").style.display = "none";
-  document.getElementById("app").style.display = "block";
-  localStorage.setItem("startScreenSeen", "true");
-  initializeData();
-}
-
-// Initialisierung mit Standarddaten
+// Initialisiere Daten, falls keine vorhanden
 function initializeData() {
   if (!localStorage.getItem(storageKey)) {
     const data = defaultSorten.map(name => ({ name, iH: "", aH: "" }));
@@ -80,17 +59,20 @@ function initializeData() {
 function loadData() {
   const saved = localStorage.getItem(storageKey);
   if (!saved) return;
+
   const data = JSON.parse(saved);
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
+
   data.forEach(entry => {
     const row = createRow(entry.name, entry.iH, entry.aH);
     tableBody.appendChild(row);
   });
+
   updateDeleteDropdown();
 }
 
-// Zeile erstellen
+// Tabellenzeile erstellen
 function createRow(name, iH, aH) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
@@ -101,7 +83,7 @@ function createRow(name, iH, aH) {
   return tr;
 }
 
-// Neue Zeile hinzufügen
+// Zeile hinzufügen
 function addRow() {
   const tableBody = document.getElementById("tableBody");
   const row = createRow("", "", "");
@@ -124,7 +106,7 @@ function saveData() {
   showSaveNotice();
 }
 
-// Speichern-Hinweis
+// ✅ Hinweis anzeigen
 function showSaveNotice() {
   const notice = document.getElementById("saveNotice");
   notice.classList.add("show");
@@ -134,19 +116,21 @@ function showSaveNotice() {
   }, 2000);
 }
 
-// Lösch-Dialog anzeigen
+// Modal anzeigen
 function showDeleteModal() {
   document.getElementById("deleteModal").style.display = "block";
 }
 
+// Modal schließen
 function hideDeleteModal() {
   document.getElementById("deleteModal").style.display = "none";
 }
 
-// Dropdown aktualisieren
+// Dropdown für Löschfunktion aktualisieren
 function updateDeleteDropdown() {
   const select = document.getElementById("deleteSelect");
   select.innerHTML = "";
+
   const rows = document.querySelectorAll("#tableBody tr");
   rows.forEach((row, index) => {
     const name = row.querySelector(".name").value;
@@ -169,7 +153,7 @@ function deleteRow() {
   }
 }
 
-// Automatisch speichern bei Änderungen
+// Automatisch speichern bei Eingaben
 document.addEventListener("input", () => {
   if (document.getElementById("app").style.display !== "none") {
     saveData();
