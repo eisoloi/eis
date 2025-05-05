@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style.css" />
   <title>Eistabelle</title>
   <script>
-    // Wenn im Standalone-Modus, zur Start-URL mit Parameter umleiten
+    // Homescreen-Redirect bei PWA
     if (window.matchMedia('(display-mode: standalone)').matches && !location.search.includes("homescreen=1")) {
       window.location.search += (window.location.search ? '&' : '?') + 'homescreen=1';
     }
@@ -19,7 +19,7 @@
 <body>
 
   <!-- Startbildschirm -->
-  <div id="startScreen">
+  <div id="startScreen" style="display: none;">
     <h1>Willkommen beim<br><b>Eiscafé Nico</b><br>Eis-Bestandsliste</h1>
     <button onclick="startApp()">Weiter</button>
     <button id="installButton" style="display: none;">📲 App installieren</button>
@@ -62,9 +62,28 @@
 
   <script src="script.js"></script>
   <script>
+    const startScreenKey = "eistabelleVisited";
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const visited = localStorage.getItem(startScreenKey);
+      if (visited) {
+        // Startscreen überspringen
+        document.getElementById("startScreen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        if (typeof initializeData === 'function') {
+          initializeData();
+        }
+      } else {
+        // Startscreen anzeigen
+        document.getElementById("startScreen").style.display = "block";
+        document.getElementById("app").style.display = "none";
+      }
+    });
+
     function startApp() {
-      document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
+      localStorage.setItem(startScreenKey, "1");
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("app").style.display = "block";
       if (typeof initializeData === 'function') {
         initializeData();
       }
@@ -109,5 +128,3 @@
 
 </body>
 </html>
-
-
