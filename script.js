@@ -71,7 +71,7 @@ function checkPassword() {
 
 function initializeData() {
   if (!localStorage.getItem(storageKey)) {
-    const data = defaultSorten.map(name => ({ name, laden: "", lager: "" }));
+    const data = defaultSorten.map(name => ({ name, i.H: "", a.H: "" }));
     localStorage.setItem(storageKey, JSON.stringify(data));
   }
   loadData();
