@@ -1,7 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Eiscafé Nico – Eis-Bestandsliste</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    #startScreen, #app {
+      display: none;
+      text-align: center;
+      padding: 2em;
+    }
+    #startScreen {
+      display: block;
+    }
+    h1 {
+      font-size: 1.3em;
+      margin-bottom: 2em;
+    }
+    button {
+      display: block;
+      margin: 1em auto;
+      padding: 0.7em 2em;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      max-width: 600px;
+      margin: 2em auto;
+      border-collapse: collapse;
+    }
+    td, th {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+    input {
+      width: 100%;
+    }
+    #saveNotice {
+      text-align: center;
+      margin-top: 1em;
+      color: green;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    #saveNotice.show {
+      opacity: 1;
+    }
+    #deleteModal {
+      display: none;
+      text-align: center;
+      background: #fff3f3;
+      padding: 1em;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+<body>
 
-const correctPassword = "eisp1";
+<div id="startScreen">
+  <h1>Willkommen beim Eiscafé Nico<br>Eis-Bestandsliste</h1>
+  <button onclick="alert('App-Installation wird später ergänzt')">App installieren</button>
+  <button onclick="startApp()">Weiter</button>
+</div>
+
+<div id="app">
+  <button onclick="addRow()">Neue Sorte hinzufügen</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>iH</th>
+        <th>aH</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <div id="deleteModal">
+    <select id="deleteSelect"></select>
+    <button onclick="deleteRow()">Löschen</button>
+    <button onclick="hideDeleteModal()">Abbrechen</button>
+  </div>
+
+  <button onclick="showDeleteModal()">Sorte löschen</button>
+
+  <div id="saveNotice">Gespeichert!</div>
+</div>
+
+<script>
 const storageKey = "eistabelleData";
-const loginKey = "eistabelleLoggedIn";
 const defaultSorten = [
   "A",
   "Amadeus", "Amarena-Kirsch", "Ananas", "Ananas-Rosmarien", "Aperol Spritz", "Apfel", "Aprikose",
@@ -47,26 +141,10 @@ const defaultSorten = [
   "Zabaione (Eierlikör)", "Zitrone"
 ];
 
-
-// Start: automatisch einloggen, wenn schon mal eingeloggt
-window.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem(loginKey) === "true") {
-    document.getElementById("loginScreen").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    initializeData();
-  }
-});
-
-function checkPassword() {
-  const input = document.getElementById("passwordInput").value;
-  if (input === correctPassword) {
-    localStorage.setItem(loginKey, "true");
-    document.getElementById("loginScreen").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    initializeData();
-  } else {
-    document.getElementById("loginError").style.display = "block";
-  }
+function startApp() {
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  initializeData();
 }
 
 function initializeData() {
@@ -84,10 +162,20 @@ function loadData() {
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
   data.forEach(entry => {
-    const row = createRow(entry.name, iH, entry.aH);
+    const row = createRow(entry.name, entry.iH, entry.aH);
     tableBody.appendChild(row);
   });
   updateDeleteDropdown();
+}
+
+function createRow(name, iH, aH) {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td><input class="name" type="text" value="${name}"></td>
+    <td><input class="iH" type="number" value="${iH}"></td>
+    <td><input class="aH" type="number" value="${aH}"></td>
+  `;
+  return tr;
 }
 
 function addRow() {
@@ -111,19 +199,19 @@ function saveData() {
   showSaveNotice();
 }
 
-function createRow(name, iH, aH) {
-  const tr = document.createElement("tr");
-  tr.innerHTML = `
-    <td><input class="name" type="text" value="${name}"></td>
-    <td><input class="iH" type="number" value="${iH}"></td>
-    <td><input class="aH" type="number" value="${aH}"></td>
-  `;
-  return tr;
+function showSaveNotice() {
+  const notice = document.getElementById("saveNotice");
+  notice.classList.add("show");
+  clearTimeout(notice._hideTimeout);
+  notice._hideTimeout = setTimeout(() => {
+    notice.classList.remove("show");
+  }, 2000);
 }
 
 function showDeleteModal() {
   document.getElementById("deleteModal").style.display = "block";
 }
+
 function hideDeleteModal() {
   document.getElementById("deleteModal").style.display = "none";
 }
@@ -152,22 +240,13 @@ function deleteRow() {
   }
 }
 
-function showSaveNotice() {
-  const notice = document.getElementById("saveNotice");
-  notice.classList.add("show");
-  clearTimeout(notice._hideTimeout); // vorhandenen Timeout zurücksetzen, falls aktiv
-
-  notice._hideTimeout = setTimeout(() => {
-    notice.classList.remove("show");
-  }, 2000);
-}
-
-
-// Änderungen automatisch speichern
 document.addEventListener("input", () => {
   if (document.getElementById("app").style.display !== "none") {
     saveData();
   }
 });
+</script>
 
+</body>
+</html>
 
