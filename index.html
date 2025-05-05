@@ -84,21 +84,27 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      const installBtn = document.getElementById('installButton');
-      if (installBtn) {
-        installBtn.style.display = 'inline-block';
-        installBtn.addEventListener('click', () => {
-          installBtn.style.display = 'none';
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('App wurde zur Installation akzeptiert.');
-            } else {
-              console.log('App-Installation wurde abgelehnt.');
-            }
-            deferredPrompt = null;
+
+      // Überprüfen, ob der Installationsbutton schon einmal angezeigt wurde
+      if (!localStorage.getItem('homescreenShown')) {
+        const installBtn = document.getElementById('installButton');
+        if (installBtn) {
+          installBtn.style.display = 'inline-block';
+          installBtn.addEventListener('click', () => {
+            installBtn.style.display = 'none';
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+              if (choiceResult.outcome === 'accepted') {
+                console.log('App wurde zur Installation akzeptiert.');
+              } else {
+                console.log('App-Installation wurde abgelehnt.');
+              }
+              deferredPrompt = null;
+              // Markieren, dass der Installationsbutton angezeigt wurde
+              localStorage.setItem('homescreenShown', 'true');
+            });
           });
-        });
+        }
       }
     });
 
