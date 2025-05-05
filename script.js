@@ -71,7 +71,7 @@ function checkPassword() {
 
 function initializeData() {
   if (!localStorage.getItem(storageKey)) {
-    const data = defaultSorten.map(name => ({ name, i.H: "", a.H: "" }));
+    const data = defaultSorten.map(name => ({ name, i H: "", a H: "" }));
     localStorage.setItem(storageKey, JSON.stringify(data));
   }
   loadData();
@@ -84,7 +84,7 @@ function loadData() {
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
   data.forEach(entry => {
-    const row = createRow(entry.name, entry.laden, entry.lager);
+    const row = createRow(entry.name, i H, entry.a H);
     tableBody.appendChild(row);
   });
   updateDeleteDropdown();
@@ -103,20 +103,20 @@ function saveData() {
   const rows = document.querySelectorAll("#tableBody tr");
   rows.forEach(row => {
     const name = row.querySelector(".name").value;
-    const laden = row.querySelector(".laden").value;
-    const lager = row.querySelector(".lager").value;
-    data.push({ name, laden, lager });
+    const i H = row.querySelector(".i H").value;
+    const a H = row.querySelector(".a H").value;
+    data.push({ name, i H, a H });
   });
   localStorage.setItem(storageKey, JSON.stringify(data));
   showSaveNotice();
 }
 
-function createRow(name, laden, lager) {
+function createRow(name, i H, a H) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
     <td><input class="name" type="text" value="${name}"></td>
-    <td><input class="laden" type="number" value="${laden}"></td>
-    <td><input class="lager" type="number" value="${lager}"></td>
+    <td><input class="i H" type="number" value="${i H}"></td>
+    <td><input class="a H" type="number" value="${a H}"></td>
   `;
   return tr;
 }
