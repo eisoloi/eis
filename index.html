@@ -19,11 +19,9 @@
 
   <!-- Startbildschirm -->
   <div id="startScreen">
-    <h1 style="text-align:center; margin-top: 2em;">Willkommen beim<br><b>Eiscafé Nico</b><br>Eis-Bestandsliste</h1>
-    <div style="text-align:center; margin-top: 2em;">
-      <button onclick="startApp()">Weiter</button>
-      <button id="installButton" style="display: none; margin-top: 1em;">📲 App installieren</button>
-    </div>
+    <h1>Willkommen beim<br><b>Eiscafé Nico</b><br>Eis-Bestandsliste</h1>
+    <button onclick="startApp()">Weiter</button>
+    <button id="installButton" style="display: none;">📲 App installieren</button>
   </div>
 
   <!-- App-Inhalt -->
@@ -63,16 +61,14 @@
 
   <script src="script.js"></script>
   <script>
-    // Startbildschirm wechseln
     function startApp() {
       document.getElementById('startScreen').style.display = 'none';
       document.getElementById('app').style.display = 'block';
       if (typeof initializeData === 'function') {
-        initializeData(); // aus script.js
+        initializeData();
       }
     }
 
-    // Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').catch(err => {
@@ -81,7 +77,6 @@
       });
     }
 
-    // Installations-Prompt-Handling
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -105,9 +100,11 @@
     });
   </script>
 
-  <footer style="font-size:10px; margin-top:2em; text-align:center;">
-    Icon von <a href="https://icons8.com" target="_blank" style="color:white;">Icons8</a>
+  <footer>
+    Icon von <a href="https://icons8.com" target="_blank">Icons8</a>
   </footer>
+
 </body>
 </html>
+
 
