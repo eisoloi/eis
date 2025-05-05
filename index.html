@@ -19,7 +19,7 @@
     <button id="installButton" style="display: none;">📲 App installieren</button>
   </div>
 
-  <!-- Haupt-App -->
+  <!-- App-Inhalt -->
   <div id="app" style="display:none;">
     <h1 class="title">Eistabelle</h1>
     <div class="table-wrapper">
@@ -57,21 +57,26 @@
   <script src="script.js"></script>
   <script>
     const startScreenKey = "eistabelleVisited";
+    let deferredPrompt;
 
     window.addEventListener("DOMContentLoaded", () => {
-      if (localStorage.getItem(startScreenKey)) {
-        showApp();
+      const visited = localStorage.getItem(startScreenKey);
+      if (visited) {
+        // Direkt zur App
+        document.getElementById("startScreen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        if (typeof initializeData === 'function') {
+          initializeData();
+        }
       } else {
+        // Starte mit Startbildschirm
         document.getElementById("startScreen").style.display = "block";
+        document.getElementById("app").style.display = "none";
       }
     });
 
     function startApp() {
       localStorage.setItem(startScreenKey, "1");
-      showApp();
-    }
-
-    function showApp() {
       document.getElementById("startScreen").style.display = "none";
       document.getElementById("app").style.display = "block";
       if (typeof initializeData === 'function') {
@@ -88,29 +93,32 @@
       });
     }
 
-    // Installations-Button
-    let deferredPrompt;
+    // Installations-Button vorbereiten
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
+
       const installBtn = document.getElementById('installButton');
-      installBtn.style.display = 'inline-block';
-      installBtn.addEventListener('click', () => {
-        installBtn.style.display = 'none';
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(choice => {
-          console.log(choice.outcome === 'accepted'
-            ? "App wurde zur Installation akzeptiert."
-            : "App-Installation wurde abgelehnt.");
-          deferredPrompt = null;
+      if (installBtn) {
+        installBtn.style.display = 'inline-block';
+        installBtn.addEventListener('click', () => {
+          installBtn.style.display = 'none';
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('App wurde installiert');
+            } else {
+              console.log('App-Installation abgelehnt');
+            }
+            deferredPrompt = null;
+          });
         });
-      });
+      }
     });
   </script>
 
   <footer>
     Icon von <a href="https://icons8.com" target="_blank">Icons8</a>
   </footer>
-
 </body>
 </html>
