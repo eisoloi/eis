@@ -1,4 +1,6 @@
 const storageKey = "eistabelleData";
+
+// Alphabetisch sortierte Eissorten mit Überschriften
 const defaultSorten = [
   "A",
   "Amadeus", "Amarena-Kirsch", "Ananas", "Ananas-Rosmarien", "Aperol Spritz", "Apfel", "Aprikose",
@@ -44,12 +46,14 @@ const defaultSorten = [
   "Zabaione (Eierlikör)", "Zitrone"
 ];
 
+// Startfunktion bei Klick auf "Weiter"
 function startApp() {
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("app").style.display = "block";
   initializeData();
 }
 
+// Initialisierung mit Standarddaten, falls noch keine vorhanden
 function initializeData() {
   if (!localStorage.getItem(storageKey)) {
     const data = defaultSorten.map(name => ({ name, iH: "", aH: "" }));
@@ -58,19 +62,24 @@ function initializeData() {
   loadData();
 }
 
+// Tabelle mit gespeicherten Daten aufbauen
 function loadData() {
   const saved = localStorage.getItem(storageKey);
   if (!saved) return;
+
   const data = JSON.parse(saved);
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
+
   data.forEach(entry => {
     const row = createRow(entry.name, entry.iH, entry.aH);
     tableBody.appendChild(row);
   });
+
   updateDeleteDropdown();
 }
 
+// Eine Tabellenzeile erstellen
 function createRow(name, iH, aH) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
@@ -81,6 +90,7 @@ function createRow(name, iH, aH) {
   return tr;
 }
 
+// Neue Zeile hinzufügen
 function addRow() {
   const tableBody = document.getElementById("tableBody");
   const row = createRow("", "", "");
@@ -89,6 +99,7 @@ function addRow() {
   saveData();
 }
 
+// Daten speichern
 function saveData() {
   const data = [];
   const rows = document.querySelectorAll("#tableBody tr");
@@ -102,6 +113,7 @@ function saveData() {
   showSaveNotice();
 }
 
+// ✅ Hinweis nach dem Speichern anzeigen
 function showSaveNotice() {
   const notice = document.getElementById("saveNotice");
   notice.classList.add("show");
@@ -111,17 +123,21 @@ function showSaveNotice() {
   }, 2000);
 }
 
+// Löschen-Dialog anzeigen
 function showDeleteModal() {
   document.getElementById("deleteModal").style.display = "block";
 }
 
+// Löschen-Dialog schließen
 function hideDeleteModal() {
   document.getElementById("deleteModal").style.display = "none";
 }
 
+// Dropdown im Lösch-Dialog mit Sortennamen füllen
 function updateDeleteDropdown() {
   const select = document.getElementById("deleteSelect");
   select.innerHTML = "";
+
   const rows = document.querySelectorAll("#tableBody tr");
   rows.forEach((row, index) => {
     const name = row.querySelector(".name").value;
@@ -132,6 +148,7 @@ function updateDeleteDropdown() {
   });
 }
 
+// Ausgewählte Sorte löschen
 function deleteRow() {
   const index = document.getElementById("deleteSelect").value;
   const rows = document.querySelectorAll("#tableBody tr");
@@ -143,11 +160,10 @@ function deleteRow() {
   }
 }
 
+// Automatisch speichern bei Eingaben
 document.addEventListener("input", () => {
   if (document.getElementById("app").style.display !== "none") {
     saveData();
   }
 });
-
-
 
