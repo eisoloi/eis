@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style.css" />
   <title>Eistabelle</title>
   <script>
-    // Homescreen-Redirect bei PWA
+    // Wenn im Standalone-Modus, zur Start-URL mit Parameter umleiten
     if (window.matchMedia('(display-mode: standalone)').matches && !location.search.includes("homescreen=1")) {
       window.location.search += (window.location.search ? '&' : '?') + 'homescreen=1';
     }
@@ -19,7 +19,7 @@
 <body>
 
   <!-- Startbildschirm -->
-  <div id="startScreen" style="display: none;">
+  <div id="startScreen">
     <h1>Willkommen beim<br><b>Eiscafé Nico</b><br>Eis-Bestandsliste</h1>
     <button onclick="startApp()">Weiter</button>
     <button id="installButton" style="display: none;">📲 App installieren</button>
@@ -67,23 +67,28 @@
     window.addEventListener("DOMContentLoaded", () => {
       const visited = localStorage.getItem(startScreenKey);
       if (visited) {
-        // Startscreen überspringen
         document.getElementById("startScreen").style.display = "none";
         document.getElementById("app").style.display = "block";
-        if (typeof initializeData === 'function') {
-          initializeData();
-        }
+        initializeData();
       } else {
-        // Startscreen anzeigen
         document.getElementById("startScreen").style.display = "block";
         document.getElementById("app").style.display = "none";
       }
+
+      // Installationsbutton für Homescreen anzeigen
+      if (window.matchMedia('(display-mode: standalone)').matches || location.search.includes("homescreen=1")) {
+        const installBtn = document.getElementById('installButton');
+        if (installBtn) {
+          installBtn.style.display = 'inline-block';
+        }
+      }
     });
 
+    // Starten der App
     function startApp() {
       localStorage.setItem(startScreenKey, "1");
-      document.getElementById("startScreen").style.display = "none";
-      document.getElementById("app").style.display = "block";
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
       if (typeof initializeData === 'function') {
         initializeData();
       }
