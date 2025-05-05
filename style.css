@@ -7,9 +7,9 @@ html {
 }
 
 body {
-  background-color: #1e1e1e;
-  color: white;
-  font-family: sans-serif;
+  background: linear-gradient(145deg, #1b1b1b, #2b2b2b);
+  color: #f0f0f0;
+  font-family: "Segoe UI", sans-serif;
   margin: 0;
   padding: 1em;
   text-align: center;
@@ -20,13 +20,17 @@ body {
 }
 
 .title {
-  font-size: 28px;
-  margin-bottom: 0.5em;
+  font-size: 30px;
+  font-weight: bold;
+  color: #ffcc00;
+  margin-bottom: 0.7em;
+  text-shadow: 0 0 4px #000;
 }
 
 .table-container {
   overflow-y: auto;
   max-height: calc(100vh - 220px);
+  padding-bottom: 50px;
 }
 
 .table-container::after {
@@ -36,59 +40,70 @@ body {
 }
 
 table {
-  width: 60%;
-  max-width: 250px;
+  width: 90%;
+  max-width: 500px;
   margin: 0 auto;
   table-layout: fixed;
   border-collapse: collapse;
-}
-
-th:nth-child(1), td:nth-child(1) {
-  width: 150px;
-}
-
-th:nth-child(2), td:nth-child(2),
-th:nth-child(3), td:nth-child(3) {
-  width: 40px;
+  background-color: #222;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
 th, td {
-  border: 1px solid #444;
+  border: 1px solid #333;
   padding: 10px;
-  font-size: 20px;
+  font-size: 18px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+th:nth-child(1), td:nth-child(1) {
+  width: 60%;
+}
+
+th:nth-child(2), td:nth-child(2),
+th:nth-child(3), td:nth-child(3) {
+  width: 20%;
+  text-align: center;
+}
+
 input {
   width: 100%;
-  font-size: 20px;
-  background-color: #2a2a2a;
-  color: white;
-  border: none;
-  padding: 5px;
+  font-size: 18px;
+  background-color: #2e2e2e;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 6px;
   box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  border-color: #ffcc00;
+  outline: none;
 }
 
 button {
-  margin: 10px 5px;
-  padding: 14px 22px;
+  margin: 10px 8px;
+  padding: 14px 24px;
   font-size: 18px;
-  background-color: #262626;
-  color: white;
+  background: #3a3a3a;
+  color: #fff;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
 }
 
 button:hover,
 button:focus {
-  background-color: #a54020;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
-  outline: none;
+  background-color: #ff6600;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
 
 button:active {
@@ -101,9 +116,9 @@ button:active {
   bottom: 0;
   width: 100%;
   background-color: #181818;
-  padding: 12px 0;
+  padding: 14px 0;
   text-align: center;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.6);
   z-index: 1000;
   border-top: 1px solid #444;
 }
@@ -112,7 +127,7 @@ button:active {
   margin: 0 12px;
 }
 
-/* Standard-Modalfenster */
+/* Modalfenster */
 .modal {
   display: none;
   position: fixed;
@@ -131,30 +146,29 @@ button:active {
   padding: 20px;
   border: 1px solid #555;
   width: 80%;
-  max-width: 300px;
+  max-width: 320px;
   text-align: center;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
 }
 
 .modal-content button {
-  background-color: #262626;
+  background-color: #3a3a3a;
   color: white;
   padding: 10px 16px;
   margin: 10px 6px;
   border-radius: 10px;
   font-size: 16px;
   border: none;
-  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.2s;
 }
 
 .modal-content button:hover {
-  background-color: #a54020;
+  background-color: #ff6600;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
 }
 
-/* ✅ Spezielles Lösch-Fenster */
+/* Löschfenster */
 #deleteModal {
   display: none;
   position: fixed;
@@ -167,7 +181,7 @@ button:active {
 }
 
 #deleteModal .modal-content {
-  background-color: #181818;
+  background-color: #1f1f1f;
   color: white;
   margin: 20vh auto;
   padding: 20px;
@@ -175,16 +189,16 @@ button:active {
   width: 80%;
   max-width: 300px;
   text-align: center;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
 }
 
 #deleteModal select {
   width: 100%;
-  font-size: 20px;
+  font-size: 18px;
   padding: 10px;
-  margin-top: 12px;
-  background-color: #2a2a2a;
+  margin-top: 14px;
+  background-color: #2e2e2e;
   color: #ffcc00;
   border: 1px solid #555;
   border-radius: 8px;
@@ -193,47 +207,36 @@ button:active {
 #deleteModal select option {
   background-color: #1a1a1a;
   color: #ffcc00;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 #deleteModal button {
-  background-color: #262626;
+  background-color: #3a3a3a;
   color: white;
   padding: 10px 16px;
   margin: 10px 6px;
   border-radius: 10px;
   font-size: 16px;
   border: none;
-  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.2s;
 }
 
 #deleteModal button:hover {
-  background-color: #a54020;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  background-color: #ff6600;
 }
 
 /* Hinweis */
 #saveNotice {
-  color: lightgreen;
+  color: #66ff66;
   display: none;
-  margin-top: 10px;
+  margin-top: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 3px #000;
 }
 
-/* Responsive für kleine Geräte */
-@media (max-width: 400px) {
+/* Responsive */
+@media (max-width: 500px) {
   th, td, input, button {
-    font-size: 16px;
-  }
-
-  .title {
-    font-size: 24px;
-  }
-}
-
-/* Kompakte Darstellung für sehr große Geräte */
-@media (min-width: 1600px) {
-  body {
     font-size: 16px;
   }
 
@@ -242,8 +245,22 @@ button:active {
   }
 
   table {
-    width: 40%;
-    max-width: 200px;
+    width: 95%;
+  }
+}
+
+@media (min-width: 1600px) {
+  body {
+    font-size: 16px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  table {
+    width: 60%;
+    max-width: 600px;
   }
 
   th, td {
@@ -261,6 +278,6 @@ button:active {
   }
 
   .modal-content, #deleteModal .modal-content {
-    max-width: 250px;
+    max-width: 320px;
   }
 }
