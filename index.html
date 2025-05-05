@@ -9,6 +9,12 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
   <title>Eistabelle</title>
+  <script>
+    // Homescreen-Redirect bei PWA
+    if (window.matchMedia('(display-mode: standalone)').matches && !location.search.includes("homescreen=1")) {
+      window.location.search += (window.location.search ? '&' : '?') + 'homescreen=1';
+    }
+  </script>
 </head>
 <body>
 
@@ -57,19 +63,18 @@
   <script src="script.js"></script>
   <script>
     const startScreenKey = "eistabelleVisited";
-    let deferredPrompt;
 
     window.addEventListener("DOMContentLoaded", () => {
       const visited = localStorage.getItem(startScreenKey);
       if (visited) {
-        // Direkt zur App
+        // Startscreen überspringen
         document.getElementById("startScreen").style.display = "none";
         document.getElementById("app").style.display = "block";
         if (typeof initializeData === 'function') {
           initializeData();
         }
       } else {
-        // Starte mit Startbildschirm
+        // Startscreen anzeigen
         document.getElementById("startScreen").style.display = "block";
         document.getElementById("app").style.display = "none";
       }
@@ -93,11 +98,11 @@
       });
     }
 
-    // Installations-Button vorbereiten
+    // Installationsbutton vorbereiten
+    let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-
       const installBtn = document.getElementById('installButton');
       if (installBtn) {
         installBtn.style.display = 'inline-block';
@@ -106,9 +111,9 @@
           deferredPrompt.prompt();
           deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
-              console.log('App wurde installiert');
+              console.log('App wurde zur Installation akzeptiert.');
             } else {
-              console.log('App-Installation abgelehnt');
+              console.log('App-Installation wurde abgelehnt.');
             }
             deferredPrompt = null;
           });
@@ -120,5 +125,6 @@
   <footer>
     Icon von <a href="https://icons8.com" target="_blank">Icons8</a>
   </footer>
+
 </body>
 </html>
