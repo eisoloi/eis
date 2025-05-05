@@ -1,5 +1,9 @@
 const storageKey = "eistabelleData";
 const startScreenKey = "eistabelleVisited";
+const homescreenShownKey = "homescreenShown";
+
+let deferredPrompt;
+let installButtonInitialized = false;
 
 // Alphabetisch sortierte Eissorten mit Überschriften
 const defaultSorten = [
@@ -26,6 +30,18 @@ const defaultSorten = [
   "Z", "Zabaione (Eierlikör)", "Zitrone"
 ];
 
+// Startbildschirm bei erstem Besuch anzeigen
+window.addEventListener("load", () => {
+  if (!localStorage.getItem(startScreenKey)) {
+    document.getElementById("startScreen").style.display = "block";
+    document.getElementById("app").style.display = "none";
+  } else {
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    initializeData();
+  }
+});
+
 // App starten (per Button vom Startbildschirm)
 function startApp() {
   localStorage.setItem(startScreenKey, "1");
@@ -34,28 +50,29 @@ function startApp() {
   initializeData();
 }
 
-// Startbildschirm bei erstem Besuch anzeigen
+// Installationsaufforderung behandeln
 window.addEventListener('beforeinstallprompt', (e) => {
   console.log("beforeinstallprompt fired");
   e.preventDefault();
   deferredPrompt = e;
 
-  const installBtn = document.getElementById('installButton');
-  if (installBtn && !localStorage.getItem('homescreenShown')) {
-    installBtn.style.display = 'inline-block';
-    installBtn.addEventListener('click', () => {
-      installBtn.style.display = 'none';
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('App wurde installiert.');
-        } else {
-          console.log('App-Installation abgelehnt.');
-        }
-        deferredPrompt = null;
-        localStorage.setItem('homescreenShown', 'true');
-      });
+  const installBtn = document.getElementById("installButton");
+  if (installBtn && !installButtonInitialized) {
+    installBtn.style.display = "inline-block";
+    installBtn.addEventListener("click", () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(choiceResult => {
+          if (choiceResult.outcome === "accepted") {
+            console.log("App wurde installiert.");
+          } else {
+            console.log("App-Installation abgelehnt.");
+          }
+          deferredPrompt = null;
+        });
+      }
     });
+    installButtonInitialized = true;
   }
 });
 
