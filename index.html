@@ -9,12 +9,6 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
   <title>Eistabelle</title>
-  <script>
-    // Wenn im Standalone-Modus, zur Start-URL mit Parameter umleiten
-    if (window.matchMedia('(display-mode: standalone)').matches && !location.search.includes("homescreen=1")) {
-      window.location.search += (window.location.search ? '&' : '?') + 'homescreen=1';
-    }
-  </script>
 </head>
 <body>
 
@@ -63,30 +57,56 @@
   <script src="script.js"></script>
   <script>
     const startScreenKey = "eistabelleVisited";
+    let deferredPrompt = null;
 
     function startApp() {
       localStorage.setItem(startScreenKey, "1");
       document.getElementById("startScreen").style.display = "none";
       document.getElementById("app").style.display = "block";
-      if (typeof initializeData === 'function') {
-        initializeData();
-      }
+      if (typeof initializeData === 'function') initializeData();
     }
 
-    // Startbildschirm nur einmal pro Benutzer zeigen
     window.addEventListener("DOMContentLoaded", () => {
       const visited = localStorage.getItem(startScreenKey);
       if (visited) {
         document.getElementById("startScreen").style.display = "none";
         document.getElementById("app").style.display = "block";
-        if (typeof initializeData === 'function') {
-          initializeData();
-        }
+        if (typeof initializeData === 'function') initializeData();
       } else {
         document.getElementById("startScreen").style.display = "block";
         document.getElementById("app").style.display = "none";
       }
     });
+
+    // App-Installationsvorgang vorbereiten
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+
+      const installBtn = document.getElementById('installButton');
+      if (installBtn) {
+        installBtn.style.display = 'inline-block';
+        installBtn.onclick = () => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('App-Installation akzeptiert');
+            } else {
+              console.log('App-Installation abgelehnt');
+            }
+            deferredPrompt = null;
+          });
+        };
+      }
+    });
+
+    // Installationsbutton im Standalone-Modus ausblenden
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      window.addEventListener('load', () => {
+        const installBtn = document.getElementById('installButton');
+        if (installBtn) installBtn.style.display = 'none';
+      });
+    }
 
     // Service Worker Registrierung
     if ('serviceWorker' in navigator) {
@@ -96,48 +116,6 @@
         });
       });
     }
-
-    // Installationsbutton vorbereiten
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-
-      if (!localStorage.getItem('homescreenShown')) {
-        const installBtn = document.getElementById('installButton');
-        if (installBtn) {
-          installBtn.style.display = 'inline-block';
-          installBtn.addEventListener('click', () => {
-            installBtn.style.display = 'none';
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-              if (choiceResult.outcome === 'accepted') {
-                console.log('App wurde zur Installation akzeptiert.');
-              } else {
-                console.log('App-Installation wurde abgelehnt.');
-              }
-              deferredPrompt = null;
-              localStorage.setItem('homescreenShown', 'true');
-            });
-          });
-        }
-      }
-    });
-
-    // Install-Button nur im Standalone-Modus ausblenden
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      document.getElementById('installButton').style.display = 'none';
-    }
-
-    // Fallback-Buttonanzeige bei Datenlöschung
-    window.addEventListener("load", () => {
-      if (!localStorage.getItem('homescreenShown')) {
-        const installBtn = document.getElementById('installButton');
-        if (installBtn) {
-          installBtn.style.display = 'inline-block';
-        }
-      }
-    });
   </script>
 
   <footer>
