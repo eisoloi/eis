@@ -4,14 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#1e1e1e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
   <title>Eistabelle</title>
   <script>
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      if (!location.href.includes("homescreen=1")) {
-        location.replace("index.html?homescreen=1");
-      }
+    // Wenn im Standalone-Modus, zur Start-URL mit Parameter umleiten
+    if (window.matchMedia('(display-mode: standalone)').matches && !location.search.includes("homescreen=1")) {
+      window.location.search += (window.location.search ? '&' : '?') + 'homescreen=1';
     }
   </script>
 </head>
@@ -69,6 +70,7 @@
       }
     }
 
+    // Service Worker Registrierung
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').catch(err => {
@@ -77,6 +79,7 @@
       });
     }
 
+    // Installationsbutton vorbereiten
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
