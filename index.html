@@ -1,69 +1,95 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#1e1e1e" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
-  <title>Eistabelle</title>
-  <script>
-    // Wenn im Standalone-Modus, zur Start-URL mit Parameter umleiten
-    if (window.matchMedia('(display-mode: standalone)').matches && !location.search.includes("homescreen=1")) {
-      window.location.search += (window.location.search ? '&' : '?') + 'homescreen=1';
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eistabelle - PWA</title>
+  <link rel="manifest" href="manifest.json"> <!-- Manifest-Datei -->
+  <link rel="icon" href="icons/favicon.ico">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
-  </script>
+    #installButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #008CBA;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
+    #installButton:hover {
+      background-color: #006f8e;
+    }
+  </style>
 </head>
 <body>
-
-  <!-- Startbildschirm -->
   <div id="startScreen">
-    <h1>Willkommen beim<br><b>Eiscafé Nico</b><br>Eis-Bestandsliste</h1>
-    <button onclick="startApp()">Weiter</button>
-    <button id="installButton" style="display: none;">📲 App installieren</button>
+    <button onclick="startApp()">App starten</button>
   </div>
-
-  <!-- App-Inhalt -->
   <div id="app" style="display:none;">
-    <h1 class="title">Eistabelle</h1>
-    <div class="table-wrapper">
-      <div class="table-container">
-        <table id="eisTable">
-          <thead>
-            <tr>
-              <th class="col-name">Eissorte</th>
-              <th class="col-small">iH</th>
-              <th class="col-small">AH</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="button-group fixed-buttons">
-      <button onclick="showDeleteModal()">🗑️</button>
-      <button onclick="addRow()">＋</button>
-      <button onclick="saveData()">💾</button>
-      <span id="saveNotice">✅</span>
-    </div>
-
-    <div id="deleteModal" class="modal">
-      <div class="modal-content">
-        <h3>Welche Eissorte möchtest du löschen?</h3>
-        <select id="deleteSelect"></select><br><br>
-        <button onclick="deleteRow()">Löschen</button>
-        <button onclick="hideDeleteModal()">Abbrechen</button>
-      </div>
-    </div>
+    <h1>Willkommen bei der Eistabelle</h1>
+    <button onclick="addRow()">Neue Zeile hinzufügen</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>iH</th>
+          <th>aH</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <button onclick="showDeleteModal()">Zeile löschen</button>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Installationsbutton -->
+  <button id="installButton">Installiere auf dem Homescreen</button>
+
   <script>
+    const storageKey = "eistabelleData";
     const startScreenKey = "eistabelleVisited";
 
+    // Alphabetisch sortierte Eissorten mit Überschriften
+    const defaultSorten = [
+      "A", "Amadeus", "Amarena-Kirsch", "Ananas", "Ananas-Rosmarien", "Aperol Spritz", "Apfel", "Aprikose",
+      "B", "Bacio", "Banane", "Basil", "Biscoff (Spekulatius)", "Brownie",
+      "C", "Cassis", "Cherrymania", "Chocoprezel", "Choco bello", "Cookies", "Crema Italiana", "Cheesecake", "Cheesecake, Caramel, Cookies",
+      "D", "Dulce de Leche", "dunkle Schokolade",
+      "E", "Erdbeere", "Erdbeere-Prosecco", "Espresso-Chip", "Erdnuss-Karamell", "Erdnuss, Honig, Schoko", "Erdbeer-Karamell",
+      "G", "Griesflammerie", "Gurke", "Granatapfel, Blutorange",
+      "H", "Heidelbeere", "Himbeere", "Himbeere, Rhabarber", "Haselnuss", "Himmelblau",
+      "I", "Indische Mango",
+      "J", "Joghurt-Natur", "Joghurt-Orange", "Joghurt-Kirsche", "Joghurt-Gurke", "Joghurt-Maracuja",
+      "K", "Kaki", "Kinde", "Kokosnuss", "Kokos-Limette", "Kiwi", "Kaktus-Feige", "Kastanie",
+      "L", "Limette-Minze",
+      "M", "Miss Purple (Süßkartoffel)", "Mandel", "Mandel-Krokant", "Malage", "Melone", "Menta",
+      "O", "Orange-Basilikum", "Omas Apfelkuchen",
+      "P", "Papaya", "Pistazie", "Praline-Haselnuss", "Pfirsich-Maracuja", "Pflaume-Zimt",
+      "Q", "Quark-Himbeere", "Quark-Holunder",
+      "S", "Sacher-Art", "Sesamkrokant", "Schokolade", "salziges Karamell", "Stracciatella", "Schoko-Banane", "Schoko-Kirsch", "Schoko-Brezel",
+      "T", "Tiramisu",
+      "U", "Uhu",
+      "V", "Vitaminbombe", "Vanille",
+      "W", "Waldmeister", "Waldfrucht", "Walnuss-Feige", "weiße Schokolade",
+      "Z", "Zabaione (Eierlikör)", "Zitrone"
+    ];
+
+    // App starten (per Button vom Startbildschirm)
+    function startApp() {
+      localStorage.setItem(startScreenKey, "1"); // Als besucht markieren
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      initializeData();
+    }
+
+    // Startbildschirm bei erstem Besuch anzeigen
     window.addEventListener("DOMContentLoaded", () => {
       const visited = localStorage.getItem(startScreenKey);
       if (visited) {
@@ -74,24 +100,62 @@
         document.getElementById("startScreen").style.display = "block";
         document.getElementById("app").style.display = "none";
       }
-
-      // Installationsbutton für Homescreen anzeigen
-      if (window.matchMedia('(display-mode: standalone)').matches || location.search.includes("homescreen=1")) {
-        const installBtn = document.getElementById('installButton');
-        if (installBtn) {
-          installBtn.style.display = 'inline-block';
-        }
-      }
     });
 
-    // Starten der App
-    function startApp() {
-      localStorage.setItem(startScreenKey, "1");
-      document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      if (typeof initializeData === 'function') {
-        initializeData();
+    // Daten initialisieren, wenn leer
+    function initializeData() {
+      if (!localStorage.getItem(storageKey)) {
+        const data = defaultSorten.map(name => ({ name, iH: "", aH: "" }));
+        localStorage.setItem(storageKey, JSON.stringify(data));
       }
+      loadData();
+    }
+
+    // Daten laden und Tabelle aufbauen
+    function loadData() {
+      const saved = localStorage.getItem(storageKey);
+      if (!saved) return;
+
+      const data = JSON.parse(saved);
+      const tableBody = document.getElementById("tableBody");
+      tableBody.innerHTML = "";
+
+      data.forEach(entry => {
+        const row = createRow(entry.name, entry.iH, entry.aH);
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Tabellenzeile erzeugen
+    function createRow(name, iH, aH) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input class="name" type="text" value="${name}"></td>
+        <td><input class="iH" type="number" value="${iH}"></td>
+        <td><input class="aH" type="number" value="${aH}"></td>
+      `;
+      return tr;
+    }
+
+    // Neue Zeile hinzufügen
+    function addRow() {
+      const tableBody = document.getElementById("tableBody");
+      const row = createRow("", "", "");
+      tableBody.appendChild(row);
+      saveData();
+    }
+
+    // Speichern
+    function saveData() {
+      const data = [];
+      const rows = document.querySelectorAll("#tableBody tr");
+      rows.forEach(row => {
+        const name = row.querySelector(".name").value;
+        const iH = row.querySelector(".iH").value;
+        const aH = row.querySelector(".aH").value;
+        data.push({ name, iH, aH });
+      });
+      localStorage.setItem(storageKey, JSON.stringify(data));
     }
 
     // Service Worker Registrierung
@@ -103,33 +167,28 @@
       });
     }
 
-    // Installationsbutton vorbereiten
+    // Installationsbutton
     let deferredPrompt;
+    const installBtn = document.getElementById('installButton');
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      const installBtn = document.getElementById('installButton');
-      if (installBtn) {
-        installBtn.style.display = 'inline-block';
-        installBtn.addEventListener('click', () => {
-          installBtn.style.display = 'none';
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('App wurde zur Installation akzeptiert.');
-            } else {
-              console.log('App-Installation wurde abgelehnt.');
-            }
-            deferredPrompt = null;
-          });
+      installBtn.style.display = 'inline-block';
+
+      installBtn.addEventListener('click', () => {
+        installBtn.style.display = 'none';
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('App wurde zur Installation akzeptiert.');
+          } else {
+            console.log('App-Installation wurde abgelehnt.');
+          }
+          deferredPrompt = null;
         });
-      }
+      });
     });
   </script>
-
-  <footer>
-    Icon von <a href="https://icons8.com" target="_blank">Icons8</a>
-  </footer>
-
 </body>
 </html>
