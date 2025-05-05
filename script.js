@@ -26,17 +26,15 @@ const defaultSorten = [
   "Z", "Zabaione (Eierlikör)", "Zitrone"
 ];
 
-// Starte App (auch von HTML aufgerufen)
+// App starten (per Button vom Startbildschirm)
 function startApp() {
-  if (!localStorage.getItem(startScreenKey)) {
-    localStorage.setItem(startScreenKey, "1");
-  }
+  localStorage.setItem(startScreenKey, "1"); // Als besucht markieren
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("app").style.display = "block";
   initializeData();
 }
 
-// Startbildschirm nur einmal anzeigen
+// Startbildschirm bei erstem Besuch anzeigen
 window.addEventListener("DOMContentLoaded", () => {
   const visited = localStorage.getItem(startScreenKey);
   if (visited) {
@@ -49,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Initialisiere Daten, falls keine vorhanden
+// Daten initialisieren, wenn leer
 function initializeData() {
   if (!localStorage.getItem(storageKey)) {
     const data = defaultSorten.map(name => ({ name, iH: "", aH: "" }));
@@ -75,7 +73,7 @@ function loadData() {
   updateDeleteDropdown();
 }
 
-// Tabellenzeile erstellen
+// Tabellenzeile erzeugen
 function createRow(name, iH, aH) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
@@ -86,7 +84,7 @@ function createRow(name, iH, aH) {
   return tr;
 }
 
-// Zeile hinzufügen
+// Neue Zeile hinzufügen
 function addRow() {
   const tableBody = document.getElementById("tableBody");
   const row = createRow("", "", "");
@@ -109,7 +107,7 @@ function saveData() {
   showSaveNotice();
 }
 
-// ✅ Hinweis anzeigen
+// Hinweis nach dem Speichern
 function showSaveNotice() {
   const notice = document.getElementById("saveNotice");
   notice.classList.add("show");
@@ -129,7 +127,7 @@ function hideDeleteModal() {
   document.getElementById("deleteModal").style.display = "none";
 }
 
-// Dropdown für Löschfunktion aktualisieren
+// Dropdown im Löschfenster aktualisieren
 function updateDeleteDropdown() {
   const select = document.getElementById("deleteSelect");
   select.innerHTML = "";
@@ -156,7 +154,7 @@ function deleteRow() {
   }
 }
 
-// Automatisch speichern bei Eingaben
+// Automatisches Speichern bei Änderungen
 document.addEventListener("input", () => {
   if (document.getElementById("app").style.display !== "none") {
     saveData();
